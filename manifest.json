@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "name": "Weeb Track",
+    "version": "0.0.1",
+    "description": "Keeps track of what episode you are on",
+    "author": "John Duy Dinh",
+    "permissions": ["declarativeContent"],
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "page_action": {
+        "default_popup": "popup.html"
+    }
+}
