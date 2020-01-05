@@ -10,3 +10,9 @@ offSwitch.addEventListener("click", () => {
 onSwitch.addEventListener("click", () => {
     switchColor.style.backgroundColor = "#65bd63";
 });
+
+chrome.tabs.getSelected(null, tab => {
+    if (tab.url.includes("episode")) {
+        // alert("YAY");
+    }
+});
