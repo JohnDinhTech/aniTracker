@@ -1,8 +1,12 @@
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("Extension is installed");
-    chrome.storage.sync.set({ listJSON: "{anime: {}, manga: {}}" }, () => {
-        console.log("Empty list initiated");
-    });
+	console.log("Extension is installed");
+	chrome.storage.sync.set({ listJSON: "{anime: {}, manga: {}}" }, () => {
+		console.log("Empty list initiated");
+	});
+
+	chrome.storage.sync.set({ tracking: true }, () => {
+		console.log("Tracking has been turned on");
+	});
 });
 
 // this is code that runs everytime a page is updated
