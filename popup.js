@@ -1,7 +1,8 @@
 const switchColor = document.querySelector(".switch-selection");
 const offSwitch = document.getElementById("off");
 const onSwitch = document.getElementById("on");
-const noTrack = document.querySelector(".no-track");
+const trackStatus = document.querySelector(".track-status");
+// const noTrack = document.querySelector(".no-track");
 
 offSwitch.addEventListener("click", () => {
 	switchColor.style.backgroundColor = "#F08080";
@@ -14,6 +15,8 @@ onSwitch.addEventListener("click", () => {
 
 chrome.tabs.getSelected(null, (tab) => {
 	if (tab.url.toLowerCase().includes("episode")) {
-		noTrack.classList.add("no-track-off");
+		trackStatus.textContent = "Currently Tracking";
+		trackStatus.classList.add("track-status-active");
+		// noTrack.classList.add("no-track-off");
 	}
 });
