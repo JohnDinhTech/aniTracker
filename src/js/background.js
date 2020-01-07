@@ -44,6 +44,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 						const condition = weebList.anime.find((obj, index) => {
 							if (obj.id === animeId) {
 								weebList.anime[index].episode = episodeNumber;
+								weebList.anime.push(
+									weebList.anime.splice(index, 1)[0]
+								);
 							}
 							return obj.id === animeId;
 						});
