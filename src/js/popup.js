@@ -55,3 +55,10 @@ function reloadPage(tab) {
 	const reloadCode = "window.location.reload();";
 	chrome.tabs.executeScript(tab.id, { code: reloadCode });
 }
+
+const resetButton = document.getElementById("reset");
+
+resetButton.addEventListener("click", () => {
+	alert("RESET!");
+	chrome.storage.sync.set({ listObject: { anime: [], manga: [] } });
+});

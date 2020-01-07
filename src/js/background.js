@@ -3,7 +3,7 @@ import jikanjs from "jikanjs";
 
 chrome.runtime.onInstalled.addListener(() => {
 	console.log("Extension is installed");
-	chrome.storage.sync.set({ listObject: { anime: {}, manga: {} } }, () => {
+	chrome.storage.sync.set({ listObject: { anime: [], manga: [] } }, () => {
 		console.log("Empty list initiated");
 	});
 
@@ -41,9 +41,20 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
 						const animeId = response.results[0].mal_id;
 						const weebList = result.listObject;
-						weebList.anime[response.results[0].mal_id] = {
-							episode: episodeNumber
-						};
+						const condition = weebList.anime.find((obj, index) => {
+							if (obj.id === animeId) {
+								weebList.anime[index].episode = episodeNumber;
+							}
+							return obj.id === animeId;
+						});
+						console.log(weebList);
+						if (!condition) {
+							weebList.anime.push({
+								title: response.results[0].title,
+								id: response.results[0].mal_id,
+								episode: episodeNumber
+							});
+						}
 						chrome.storage.sync.set(
 							{ listObject: weebList },
 							() => {
