@@ -1,0 +1,20 @@
+{
+	"name": "Weeb Track",
+	"version": "0.0.1",
+	"description": "Keeps track of what episode you are on",
+	"author": "John Duy Dinh",
+	"permissions": ["declarativeContent", "tabs", "storage", "activeTab"],
+	"options_page": "options.html",
+	"background": {
+		"page": "background.html"
+	},
+	"browser_action": {
+		"default_popup": "popup.html",
+		"default_icon": "weeb_track32.png"
+	},
+	"icons": {
+		"48": "weeb_track32.png"
+	},
+	"manifest_version": 2,
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
