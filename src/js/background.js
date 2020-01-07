@@ -1,4 +1,5 @@
 import "../img/weeb_track32.png";
+import jikanjs from "jikanjs";
 
 chrome.runtime.onInstalled.addListener(() => {
 	console.log("Extension is installed");
@@ -29,6 +30,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 				.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
 				.join(" ");
 
+			jikanjs.search("anime", titleName).then((response) => {
+				console.log(response.results[0]);
+			});
 			alert(titleName);
 			// alert(url.indexOf(episodeNumberUrl));
 			// alert(`You are on episode ${episodeNumber}`);
