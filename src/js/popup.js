@@ -17,6 +17,7 @@ chrome.tabs.getSelected(null, (tab) => {
 		}
 		offSwitch.addEventListener("click", () => {
 			if (isCompatible) {
+				reloadPage(tab);
 				trackStatus.textContent = "Not Tracking";
 				trackStatus.classList.remove("track-status-active");
 			}
@@ -28,6 +29,7 @@ chrome.tabs.getSelected(null, (tab) => {
 
 		onSwitch.addEventListener("click", () => {
 			if (isCompatible) {
+				reloadPage(tab);
 				trackStatus.textContent = "Currently Tracking";
 				trackStatus.classList.add("track-status-active");
 			}
@@ -48,3 +50,8 @@ chrome.tabs.getSelected(null, (tab) => {
 		}
 	});
 });
+
+function reloadPage(tab) {
+	const reloadCode = "window.location.reload();";
+	chrome.tabs.executeScript(tab.id, { code: reloadCode });
+}
