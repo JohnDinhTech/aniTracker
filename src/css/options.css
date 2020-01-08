@@ -1,0 +1,199 @@
+@font-face {
+	font-family: "Gotham";
+	src: url("../fonts/Gotham-Book.otf");
+}
+
+body {
+	font-family: "Gotham";
+	margin: 0;
+	overflow: hidden;
+}
+
+.background {
+	height: 100vh;
+	background-color: #172b4d;
+}
+
+.background:before {
+	content: "";
+	position: absolute;
+	top: -150vh;
+	bottom: 0;
+	left: 0px;
+	width: 250vw;
+	background-color: #11cdef;
+	transform: skew(-80deg);
+}
+
+.title {
+	font-size: 30px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.logo {
+	margin-right: 20px;
+}
+
+.menu-icon {
+	margin-right: 15px;
+}
+
+.heart-icon {
+	color: red;
+}
+
+#side-menu {
+	background-color: white;
+	max-width: 280px;
+	font-size: 16px;
+	padding: 1px 20px;
+	height: 100%;
+	position: relative;
+}
+
+#side-menu nav a {
+	display: block;
+	color: #172b4d;
+	text-decoration: none;
+	padding: 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	transition: ease-in 150ms;
+}
+
+#side-menu nav a:hover {
+	background-color: #f6f9fc;
+	color: #11cdef;
+}
+
+#side-menu nav a.active {
+	background-color: #f6f9fc;
+	color: #11cdef;
+}
+
+#list {
+	width: 60vw;
+	background-color: #ffffff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-30%, -50%);
+	border-radius: 5px;
+	overflow-y: auto;
+	max-height: 50vh;
+}
+
+#list .sort-titles {
+	display: grid;
+	grid-template-columns: 10% 30% auto auto 30%;
+	background-color: #f1f3f9;
+	text-align: center;
+	padding: 10px;
+	color: #8898aa;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+.sort-titles .checkbox {
+	display: flex;
+	align-self: center;
+}
+
+.sort-titles .checkbox {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.sort-titles input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.checkmark {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+	border-radius: 5px;
+	transition: all 200ms ease-in-out;
+	border: 2px solid #8898aa;
+}
+
+.checkbox:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+.checkbox input:checked ~ .checkmark {
+	background-color: #2196f3;
+	border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.checkbox input:checked ~ .checkmark:after {
+	display: block;
+}
+
+.checkbox .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.sort-arrows {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+.sort-arrows img {
+	display: block;
+	transform: scale(2);
+}
+
+.list-episodes {
+	padding-top: 3px;
+}
+
+.up-arrow {
+	margin-bottom: 15px;
+}
+
+.down-arrow {
+	margin-top: 15px;
+}
+
+#list h1 {
+	padding: 20px;
+	margin-left: 20px;
+}
+
+#list .sort-titles h3 {
+	display: inline-block;
+	font-weight: 100;
+}
