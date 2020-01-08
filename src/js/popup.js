@@ -59,6 +59,5 @@ function reloadPage(tab) {
 const resetButton = document.getElementById("reset");
 
 resetButton.addEventListener("click", () => {
-	alert("RESET!");
 	chrome.storage.sync.set({ listObject: { anime: [], manga: [] } });
 });

@@ -240,8 +240,17 @@ input[type="checkbox"] {
 	margin-right: 20px;
 }
 
-.anime-display .title h2 {
+.anime-display .title a {
+	text-decoration: none;
 	display: inline-block;
+	color: #172b4d;
+	font-size: 15px;
+	font-weight: 800;
+	transition: color ease-in-out 200ms;
+}
+
+.anime-display .title a:hover {
+	color: #11cdef;
 }
 
 .anime-display .episode-count {

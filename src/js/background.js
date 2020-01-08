@@ -40,7 +40,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 				jikanjs.search("anime", titleName).then((response) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
 						const animeId = response.results[0].mal_id;
+						const imgUrl = response.results[0].image_url;
+						const title = response.results[0].title;
+						const episodeTotal = response.results[0].episodes;
+						const url = response.results[0].url;
 						const weebList = result.listObject;
+						console.log(response.results[0]);
+
 						const condition = weebList.anime.find((obj, index) => {
 							if (obj.id === animeId) {
 								weebList.anime[index].episode = episodeNumber;
@@ -53,9 +59,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 						console.log(weebList);
 						if (!condition) {
 							weebList.anime.push({
+								imgUrl,
+								title,
+								episodeTotal,
+								url,
 								title: response.results[0].title,
 								id: response.results[0].mal_id,
-								episode: episodeNumber
+								episodeCount: episodeNumber
 							});
 						}
 						chrome.storage.sync.set(
