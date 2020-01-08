@@ -4,7 +4,7 @@ const listContainer = document.getElementById("list");
 
 chrome.storage.sync.get(["listObject"], (result) => {
 	console.log(result.listObject);
-	result.listObject.anime.forEach((anime) => {
+	result.listObject.anime.reverse().forEach((anime) => {
 		renderAnime(anime);
 	});
 });
