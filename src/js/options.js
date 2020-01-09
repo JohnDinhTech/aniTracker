@@ -10,26 +10,28 @@ chrome.storage.sync.get(["selection"], (result) => {
 		listContainer.style.display = "none";
 		selectionContainer.style.display = "block";
 		chrome.storage.local.get(["selected"], (result) => {
-			console.log(result);
 			result.selected.searchResults.forEach((anime) => {
-				renderAnimeSelection(anime, result.selected.currentEpisode);
+				renderAnimeSelection(
+					anime,
+					result.selected.currentEpisode,
+					result.selected.urlTitle
+				);
 			});
 		});
 	} else {
 		chrome.storage.sync.get(["listObject"], (result) => {
-			console.log(result);
+			console.log(result.listObject);
 			result.listObject.anime.reverse().forEach((anime) => {
 				renderAnimeList(anime);
 			});
 		});
 	}
-
-	// console.log(result.listObject);
 });
 
 function renderAnimeSelection(
 	{ mal_id, url, image_url, title, episodes },
-	episodeCount
+	episodeCount,
+	urlTitle
 ) {
 	const animeContainer = document.createElement("div");
 
@@ -60,32 +62,49 @@ function renderAnimeSelection(
 	animeContainer
 		.querySelector(".select-button")
 		.addEventListener("click", () => {
-			addAnime({ mal_id, image_url, title, episodes }, episodeCount);
+			addAnime(
+				{ mal_id, image_url, title, episodes },
+				episodeCount,
+				urlTitle
+			);
+			chrome.storage.sync.set({ selection: false });
+			chrome.storage.local.set({ selected: [] });
+			chrome.tabs.reload();
 		});
 
 	animeContainer.classList.add("anime-display", "select");
 	selectionContainer.appendChild(animeContainer);
-	chrome.storage.sync.set({ selection: false });
-	chrome.storage.local.set({ selected: [] });
 }
 
-function addAnime({ mal_id, url, image_url, title, episodes }, episodeCount) {
+function addAnime(
+	{ mal_id, url, image_url, title, episodes },
+	episodeCount,
+	urlTitle
+) {
 	chrome.storage.sync.get(["listObject"], (result) => {
-		console.log(episodeCount);
 		const weebList = result.listObject;
-		weebList.anime.push({
-			episodeCount,
-			mal_id,
-			image_url,
-			url,
-			title,
-			episodeTotal: episodes
+		// console.log(weebList);
+		const condition = weebList.anime.find((obj, index) => {
+			if (obj.mal_id === mal_id) {
+				console.log(obj);
+				weebList.anime[index].episodeCount = episodeCount;
+				weebList.anime[index].urlTitle.push(urlTitle);
+				weebList.anime.push(weebList.anime.splice(index, 1)[0]);
+			}
+			return obj.mal_id === mal_id;
 		});
-		console.log(weebList);
+		if (!condition) {
+			weebList.anime.push({
+				episodeCount,
+				mal_id,
+				image_url,
+				url,
+				title,
+				episodeTotal: episodes,
+				urlTitle: [urlTitle]
+			});
+		}
 		chrome.storage.sync.set({ listObject: weebList });
-	});
-	chrome.storage.sync.get(["listObject"], (result) => {
-		console.log(result.listObject);
 	});
 }
 

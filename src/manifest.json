@@ -3,7 +3,13 @@
 	"version": "0.0.1",
 	"description": "Keeps track of what episode you are on",
 	"author": "John Duy Dinh",
-	"permissions": ["declarativeContent", "tabs", "storage", "activeTab"],
+	"permissions": [
+		"declarativeContent",
+		"tabs",
+		"storage",
+		"activeTab",
+		"unlimitedStorage"
+	],
 	"options_page": "options.html",
 	"background": {
 		"page": "background.html"

@@ -41,43 +41,39 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 				jikanjs.search("anime", titleName).then((response) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
-						const animeId = response.results[0].mal_id;
-						const imgUrl = response.results[0].image_url;
-						const title = response.results[0].title;
-						const episodeTotal = response.results[0].episodes;
-						const url = response.results[0].url;
+						// const animeId = response.results[0].mal_id;
 						const weebList = result.listObject;
-						console.log(response);
 
 						const condition = weebList.anime.find((obj, index) => {
-							if (obj.id === animeId) {
+							const isIndex = obj.urlTitle.indexOf(titleName);
+							if (isIndex >= 0) {
 								weebList.anime[
 									index
 								].episodeCount = episodeNumber;
 								weebList.anime.push(
 									weebList.anime.splice(index, 1)[0]
 								);
+								return true;
 							}
-							return obj.id === animeId;
+							// if (obj.mal_id === animeId) {
+							// 	weebList.anime[
+							// 		index
+							// 	].episodeCount = episodeNumber;
+							// 	weebList.anime.push(
+							// 		weebList.anime.splice(index, 1)[0]
+							// 	);
+							// }
+							// return obj.mal_id === animeId;
 						});
-						console.log(weebList);
+						console.log(condition);
 						if (!condition) {
-							// weebList.anime.push({
-							// 	imgUrl,
-							// 	title,
-							// 	episodeTotal,
-							// 	url,
-							// 	title: response.results[0].title,
-							// 	id: response.results[0].mal_id,
-							// 	episodeCount: episodeNumber
-							// });
-							console.log("hi");
 							chrome.storage.sync.set({ selection: true }, () => {
 								chrome.storage.local.set(
 									{
 										selected: {
 											currentEpisode: episodeNumber,
-											searchResults: response.results
+											searchResults: response.results,
+											urlTitle: titleName
 										}
 									},
 									() => {
@@ -97,13 +93,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 									}
 								);
 							});
+						} else {
+							chrome.storage.sync.set(
+								{
+									listObject: weebList
+								},
+								() => {
+									console.log("Anime list has been updated");
+								}
+							);
 						}
-						chrome.storage.sync.set(
-							{ listObject: weebList },
-							() => {
-								console.log("Anime list has been updated");
-							}
-						);
 					});
 				});
 			}
