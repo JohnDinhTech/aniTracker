@@ -22,6 +22,7 @@ chrome.storage.sync.get(["selection"], (result) => {
 		chrome.storage.sync.get(["listObject"], (result) => {
 			console.log(result.listObject);
 			result.listObject.anime.reverse().forEach((anime) => {
+				console.log(anime);
 				renderAnimeList(anime);
 			});
 		});
@@ -34,7 +35,7 @@ function renderAnimeSelection(
 	urlTitle
 ) {
 	const animeContainer = document.createElement("div");
-
+	console.log(url);
 	animeContainer.innerHTML = `
                     <div class="title">
                         <img
@@ -63,7 +64,7 @@ function renderAnimeSelection(
 		.querySelector(".select-button")
 		.addEventListener("click", () => {
 			addAnime(
-				{ mal_id, image_url, title, episodes },
+				{ mal_id, url, image_url, title, episodes },
 				episodeCount,
 				urlTitle
 			);
