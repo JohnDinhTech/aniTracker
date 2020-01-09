@@ -2,14 +2,16 @@ import "../img/weeb_track32.png";
 import jikanjs from "jikanjs";
 
 chrome.runtime.onInstalled.addListener(() => {
-	console.log("Extension is installed");
-	chrome.storage.sync.set({ listObject: { anime: [], manga: [] } }, () => {
-		console.log("Empty list initiated");
-	});
-
-	chrome.storage.sync.set({ tracking: true }, () => {
-		console.log("Tracking has been turned on");
-	});
+	chrome.storage.sync.set(
+		{
+			listObject: { anime: [], manga: [] },
+			tracking: true,
+			selection: false
+		},
+		() => {
+			console.log("Extension storage has been set up");
+		}
+	);
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -45,7 +47,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 						const episodeTotal = response.results[0].episodes;
 						const url = response.results[0].url;
 						const weebList = result.listObject;
-						console.log(response.results[0]);
+						console.log(response);
 
 						const condition = weebList.anime.find((obj, index) => {
 							if (obj.id === animeId) {
@@ -60,14 +62,40 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 						});
 						console.log(weebList);
 						if (!condition) {
-							weebList.anime.push({
-								imgUrl,
-								title,
-								episodeTotal,
-								url,
-								title: response.results[0].title,
-								id: response.results[0].mal_id,
-								episodeCount: episodeNumber
+							// weebList.anime.push({
+							// 	imgUrl,
+							// 	title,
+							// 	episodeTotal,
+							// 	url,
+							// 	title: response.results[0].title,
+							// 	id: response.results[0].mal_id,
+							// 	episodeCount: episodeNumber
+							// });
+							console.log("hi");
+							chrome.storage.sync.set({ selection: true }, () => {
+								chrome.storage.local.set(
+									{
+										selected: {
+											currentEpisode: episodeNumber,
+											searchResults: response.results
+										}
+									},
+									() => {
+										chrome.runtime.openOptionsPage(() => {
+											chrome.tabs.query(
+												{
+													active: true,
+													currentWindow: true
+												},
+												(tabs) => {
+													chrome.tabs.reload(
+														tabs[0].id
+													);
+												}
+											);
+										});
+									}
+								);
 							});
 						}
 						chrome.storage.sync.set(

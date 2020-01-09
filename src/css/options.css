@@ -22,9 +22,12 @@ body {
 	left: 0px;
 	width: 250vw;
 	background-color: #11cdef;
-	transform: skew(-80deg);
+	transform: skew(-78deg);
 }
 
+/***************************
+		Side Menu
+***************************/
 .logo-title {
 	font-size: 30px;
 	padding: 10px;
@@ -73,7 +76,11 @@ body {
 	background-color: #f6f9fc;
 	color: #11cdef;
 }
-#list {
+
+/***************************
+	   Modal Container
+***************************/
+#modal-container {
 	width: 60vw;
 	background-color: #ffffff;
 	position: absolute;
@@ -84,8 +91,23 @@ body {
 	max-height: 65vh;
 }
 
+#modal-container div h1 {
+	padding: 20px;
+	margin-left: 100px;
+}
+
+#modal-container .sort-titles h3 {
+	display: inline-block;
+	font-weight: 100;
+}
+
+/***************************
+	Scrollbar for Modal
+***************************/
+
 .scrollbar {
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .scrollbar::-webkit-scrollbar-track {
@@ -102,7 +124,11 @@ body {
 	background-color: #11cdef;
 }
 
-#list .sort-titles {
+/***************************
+		 List Modal
+***************************/
+
+#modal-container .sort-titles {
 	display: grid;
 	grid-template-columns: 10% 25% 25% 15% 25%;
 	background-color: #f1f3f9;
@@ -113,9 +139,12 @@ body {
 	font-size: 11px;
 }
 
-#list .sort-titles .list-title {
+#modal-container .sort-titles .list-title {
 	text-align: left;
 	margin-left: 60px;
+}
+
+#list {
 }
 
 .checkbox {
@@ -202,15 +231,24 @@ input[type="checkbox"] {
 	margin-top: 15px;
 }
 
-#list h1 {
-	padding: 20px;
-	margin-left: 100px;
+/***************************
+	Anime Selection Modal
+***************************/
+
+#modal-container #select-new-anime .sort-titles {
+	display: grid;
+	grid-template-columns: 25% 25% 15% 35%;
+	background-color: #f1f3f9;
+	text-align: center;
+	padding: 10px;
+	color: #8898aa;
+	text-transform: uppercase;
+	font-size: 11px;
 }
 
-#list .sort-titles h3 {
-	display: inline-block;
-	font-weight: 100;
-}
+/***************************
+	  Anime List Display
+***************************/
 
 .anime-display {
 	display: grid;
@@ -238,6 +276,7 @@ input[type="checkbox"] {
 .anime-display .title img {
 	width: 40px;
 	margin-right: 20px;
+	margin-left: 20px;
 }
 
 .anime-display .title a {
@@ -277,4 +316,49 @@ input[type="checkbox"] {
 	background-color: #11cdef;
 	height: 3px;
 	width: 30%;
+}
+
+/***************************
+   Anime Selection Display
+***************************/
+
+#select-new-anime {
+	display: none;
+}
+
+#select-new-anime {
+	text-align: center;
+}
+
+#select-new-anime .sort-titles .list-title {
+	text-align: center;
+	margin-left: 0;
+}
+
+.anime-display.select {
+	grid-template-columns: 25% 25% 15% 35%;
+	padding: 10px;
+	color: #172b4d;
+}
+
+.anime-display.select .link-to-mal a {
+	color: #7764e4;
+	font-size: 16px;
+	text-decoration: none;
+	transition: color ease 200ms;
+}
+
+.anime-display.select .link-to-mal a:hover {
+	color: #11cdef;
+}
+
+.anime-display.select .select-button button {
+	background-color: #11cdef;
+	font-size: 16px;
+	color: white;
+	border: none;
+	padding: 10px 50px;
+	border-radius: 5px;
+	cursor: pointer;
+	outline: none;
 }
