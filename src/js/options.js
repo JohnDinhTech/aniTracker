@@ -35,7 +35,6 @@ function renderAnimeSelection(
 	urlTitle
 ) {
 	const animeContainer = document.createElement("div");
-	console.log(url);
 	animeContainer.innerHTML = `
                     <div class="title">
                         <img
@@ -118,7 +117,7 @@ function renderAnimeList({
 	episodeCount
 }) {
 	const animeContainer = document.createElement("div");
-	let completionPercent = Math.floor((episodeCount / episodeTotal) * 100);
+	let completionPercent = Math.ceil((episodeCount / episodeTotal) * 100);
 	let status = "Watching";
 	let color = "#11cdef";
 	if (episodeCount === episodeTotal) {
