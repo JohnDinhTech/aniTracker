@@ -278,8 +278,7 @@ input[type="checkbox"] {
 
 .anime-display .title a {
 	text-decoration: none;
-	padding-bottom: 1px;
-	display: inline-block;
+	padding-bottom: 5px;
 	color: #7764e4;
 	font-size: 15px;
 	font-weight: 800;

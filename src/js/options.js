@@ -131,7 +131,10 @@ function renderAnimeList({
 	if (episodeCount === episodeTotal) {
 		status = "Completed";
 		color = "#2DCE98";
-	} else if (episodeTotal === 0) {
+	} else if (
+		episodeTotal === 0 ||
+		(episodeTotal !== 0 && episodeCount > episodeTotal)
+	) {
 		completionPercent = "?";
 	}
 
