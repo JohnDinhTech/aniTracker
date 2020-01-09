@@ -278,11 +278,13 @@ input[type="checkbox"] {
 
 .anime-display .title a {
 	text-decoration: none;
+	padding-bottom: 1px;
 	display: inline-block;
-	color: #172b4d;
+	color: #7764e4;
 	font-size: 15px;
 	font-weight: 800;
 	transition: color ease-in-out 200ms;
+	border-bottom: 2px solid #172b4d;
 }
 
 .anime-display .title a:hover {
