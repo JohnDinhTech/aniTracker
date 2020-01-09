@@ -14,7 +14,8 @@ chrome.storage.sync.get(["selection"], (result) => {
 				renderAnimeSelection(
 					anime,
 					result.selected.currentEpisode,
-					result.selected.urlTitle
+					result.selected.urlTitle,
+					result.selected.watchUrl
 				);
 			});
 		});
@@ -32,7 +33,8 @@ chrome.storage.sync.get(["selection"], (result) => {
 function renderAnimeSelection(
 	{ mal_id, url, image_url, title, episodes },
 	episodeCount,
-	urlTitle
+	urlTitle,
+	watchUrl
 ) {
 	const animeContainer = document.createElement("div");
 	animeContainer.innerHTML = `
@@ -65,11 +67,14 @@ function renderAnimeSelection(
 			addAnime(
 				{ mal_id, url, image_url, title, episodes },
 				episodeCount,
-				urlTitle
+				urlTitle,
+				watchUrl
 			);
 			chrome.storage.sync.set({ selection: false });
 			chrome.storage.local.set({ selected: [] });
-			chrome.tabs.reload();
+			chrome.tabs.getCurrent((tab) => {
+				chrome.tabs.remove(tab.id);
+			});
 		});
 
 	animeContainer.classList.add("anime-display", "select");
@@ -79,14 +84,14 @@ function renderAnimeSelection(
 function addAnime(
 	{ mal_id, url, image_url, title, episodes },
 	episodeCount,
-	urlTitle
+	urlTitle,
+	watchUrl
 ) {
 	chrome.storage.sync.get(["listObject"], (result) => {
 		const weebList = result.listObject;
 		// console.log(weebList);
 		const condition = weebList.anime.find((obj, index) => {
 			if (obj.mal_id === mal_id) {
-				console.log(obj);
 				weebList.anime[index].episodeCount = episodeCount;
 				weebList.anime[index].urlTitle.push(urlTitle);
 				weebList.anime.push(weebList.anime.splice(index, 1)[0]);
@@ -100,9 +105,11 @@ function addAnime(
 				image_url,
 				url,
 				title,
+				watchUrl,
 				episodeTotal: episodes,
 				urlTitle: [urlTitle]
 			});
+			console.log(weebList);
 		}
 		chrome.storage.sync.set({ listObject: weebList });
 	});
@@ -114,7 +121,8 @@ function renderAnimeList({
 	image_url,
 	title,
 	episodeTotal,
-	episodeCount
+	episodeCount,
+	watchUrl
 }) {
 	const animeContainer = document.createElement("div");
 	let completionPercent = Math.ceil((episodeCount / episodeTotal) * 100);
@@ -135,7 +143,7 @@ function renderAnimeList({
                     <img
                         src="${image_url}"
                     />
-                    <a href="${url}" target="_blank"
+                    <a href="${watchUrl}" target="_blank"
                         <h2>${title}</h2>
                     </a>
 					</div>

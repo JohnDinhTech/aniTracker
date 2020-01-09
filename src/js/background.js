@@ -14,6 +14,20 @@ chrome.runtime.onInstalled.addListener(() => {
 	);
 });
 
+function updateWatchUrl(url, episodeUrl, currentEpisode) {
+	const isGoGo = url.indexOf("gogoanime");
+	const isAnimeFreak = url.indexOf("animefreak");
+	if (isGoGo || isAnimeFreak > 0) {
+		const updatedEpisodeUrl = episodeUrl.replace(
+			/\d+/g,
+			currentEpisode + 1
+		);
+		return url.replace(episodeUrl, updatedEpisodeUrl);
+	} else {
+		return url;
+	}
+}
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	chrome.tabs.getSelected(null, (tab) => {
 		chrome.storage.sync.get(["tracking"], (result) => {
@@ -41,12 +55,25 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 				jikanjs.search("anime", titleName).then((response) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
-						// const animeId = response.results[0].mal_id;
 						const weebList = result.listObject;
 
 						const condition = weebList.anime.find((obj, index) => {
 							const isIndex = obj.urlTitle.indexOf(titleName);
 							if (isIndex >= 0) {
+								console.log(episodeNumber, obj.episodeTotal);
+								if (
+									episodeNumber < obj.episodeTotal ||
+									obj.episodeTotal === 0
+								) {
+									weebList.anime[
+										index
+									].watchUrl = updateWatchUrl(
+										url,
+										episodeNumberUrl[0],
+										episodeNumber
+									);
+									console.log(weebList);
+								}
 								weebList.anime[
 									index
 								].episodeCount = episodeNumber;
@@ -55,17 +82,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 								);
 								return true;
 							}
-							// if (obj.mal_id === animeId) {
-							// 	weebList.anime[
-							// 		index
-							// 	].episodeCount = episodeNumber;
-							// 	weebList.anime.push(
-							// 		weebList.anime.splice(index, 1)[0]
-							// 	);
-							// }
-							// return obj.mal_id === animeId;
 						});
-						console.log(condition);
 						if (!condition) {
 							chrome.storage.sync.set({ selection: true }, () => {
 								chrome.storage.local.set(
@@ -73,7 +90,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 										selected: {
 											currentEpisode: episodeNumber,
 											searchResults: response.results,
-											urlTitle: titleName
+											urlTitle: titleName,
+											watchUrl: url
 										}
 									},
 									() => {
