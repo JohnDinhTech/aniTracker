@@ -4,6 +4,19 @@ const switchColor = document.querySelector(".switch-selection");
 const offSwitch = document.getElementById("off");
 const onSwitch = document.getElementById("on");
 const trackStatus = document.querySelector(".track-status");
+const listButton = document.getElementById("list");
+const exportDataBtn = document.getElementById("export");
+const textArea = document.querySelector("textarea");
+
+exportDataBtn.addEventListener("click", () => {
+	chrome.storage.sync.get(["listObject"], (result) => {
+		textArea.value = JSON.stringify(result.listObject);
+	});
+});
+
+listButton.addEventListener("click", () => {
+	chrome.runtime.openOptionsPage();
+});
 
 // const noTrack = document.querySelector(".no-track");
 

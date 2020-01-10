@@ -1,6 +1,7 @@
 import "../css/options.css";
 import jikanjs from "jikanjs";
 
+const listModal = document.getElementById("list");
 const listContainer = document.getElementById("anime-container");
 const selectionContainer = document.getElementById("select-new-anime");
 const searchbar = document.querySelector(".list-searchbar");
@@ -33,7 +34,7 @@ function renderSearch(searchTerm) {
 chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
 	if (result.selection) {
-		listContainer.style.display = "none";
+		listModal.style.display = "none";
 		selectionContainer.style.display = "block";
 		chrome.storage.local.get(["selected"], (result) => {
 			result.selected.searchResults.forEach((anime) => {
