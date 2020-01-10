@@ -8,9 +8,10 @@ const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
 const selectAllCheckbox = document.getElementById("select-all");
-const buttonContainer = document.querySelector(".button-container");
+const editButton = document.getElementById("edit-button");
 
 let checkedAnime = [];
+let editCondition = false;
 
 selectAllCheckbox.addEventListener("change", (e) => {
 	let condition = false;
@@ -18,6 +19,16 @@ selectAllCheckbox.addEventListener("change", (e) => {
 		condition = true;
 	}
 	checkAll(condition);
+});
+
+editButton.addEventListener("click", () => {
+	editCondition = !editCondition;
+	chrome.storage.sync.get(["listObject"], (result) => {
+		listContainer.innerHTML = "";
+		result.listObject.anime
+			.reverse()
+			.forEach((anime) => renderSearch(searchbar.value, editCondition));
+	});
 });
 
 deleteButton.addEventListener("click", () => {
@@ -71,10 +82,12 @@ function initCheckbox() {
 			}
 			if (checkedAnime.length === 0) {
 				deleteButton.style.opacity = 0;
-				deleteButton.style.zIndex = -2;
+				deleteButton.disabled = true;
+				deleteButton.style.cursor = "context-menu";
 			} else {
 				deleteButton.style.opacity = 1;
-				deleteButton.style.zIndex = 0;
+				deleteButton.disabled = false;
+				deleteButton.style.cursor = "pointer";
 			}
 		});
 		// if (checkbox.checked) {
@@ -101,13 +114,13 @@ function checkAll(condition) {
 	console.log(checkedAnime);
 }
 
-function renderSearch(searchTerm) {
+function renderSearch(searchTerm, editCondition) {
 	listContainer.innerHTML = "";
 	const filteredAnime = animeList.filter((anime) =>
 		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 	filteredAnime.forEach((anime) => {
-		renderAnimeList(anime);
+		renderAnimeList(anime, editCondition);
 	});
 	initCheckbox();
 }
@@ -228,21 +241,16 @@ function displayButtons() {
 	const checkboxes = document.querySelectorAll("#checkbox");
 }
 
-function renderAnimeList({
-	mal_id,
-	url,
-	image_url,
-	title,
-	episodeTotal,
-	episodeCount,
-	watchUrl
-}) {
+function renderAnimeList(
+	{ mal_id, url, image_url, title, episodeTotal, episodeCount, watchUrl },
+	editCondition
+) {
 	const animeContainer = document.createElement("div");
 	let completionPercent = Math.ceil((episodeCount / episodeTotal) * 100);
 	let status = "Watching";
 	let color = "#11cdef";
 	const checkCondition = checkedAnime.find((id) => parseInt(id) === mal_id);
-	console.log(checkedAnime);
+	let episodeNumber = episodeCount;
 	if (episodeCount === episodeTotal) {
 		status = "Completed";
 		color = "#2DCE98";
@@ -252,6 +260,9 @@ function renderAnimeList({
 	) {
 		completionPercent = "?";
 		episodeTotal = "?";
+	}
+	if (editCondition) {
+		episodeNumber = `<input id="edit-box" type="text" value=${episodeCount} mal_id=${mal_id} />`;
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
@@ -269,7 +280,7 @@ function renderAnimeList({
                     </a>
 					</div>
 					<div class="episode-count">
-						<span id="watched-episodes">${episodeCount}</span>
+						<span id="watched-episodes">${episodeNumber}</span>
 						/
 						<span id="total-episodes">${episodeTotal}</span>
 					</div>

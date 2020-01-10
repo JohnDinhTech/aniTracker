@@ -93,7 +93,7 @@ body {
 
 #modal-container div h1 {
 	padding: 20px;
-	margin-left: 100px;
+	margin-left: 35px;
 	display: inline-block;
 }
 
@@ -152,6 +152,8 @@ body {
 
 .scrollbar::-webkit-scrollbar {
 	width: 12px;
+	background-color: #c0bdbd;
+	border-radius: 5px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
@@ -293,12 +295,17 @@ input[type="checkbox"] {
 }
 
 #edit-button {
-	background-color: #7764e4;
+	background-color: transparent;
+	color: #7764e4;
+	border: 2px solid #7764e4;
+	transition: all linear 200ms;
 }
+
 #delete-button {
 	background-color: #cc3f29;
+	border: 2px solid #cc3f29;
 	opacity: 0;
-	z-index: -1;
+	cursor: default;
 }
 
 /***************************
@@ -321,7 +328,7 @@ input[type="checkbox"] {
 ***************************/
 
 #anime-container {
-	max-height: 400px;
+	max-height: 45vh;
 }
 
 .anime-display {
@@ -437,4 +444,17 @@ input[type="checkbox"] {
 	border-radius: 5px;
 	cursor: pointer;
 	outline: none;
+}
+
+#edit-box {
+	outline: none;
+	border: 2px solid #172b4d17;
+	box-shadow: 0 3px 17px #2c28282a;
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 800;
+	color: #172b4d;
+	transition: box-shadow ease-in-out 150ms;
+	width: 30px;
+	text-align: center;
 }
