@@ -7,6 +7,15 @@ const selectionContainer = document.getElementById("select-new-anime");
 const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
+const selectAllCheckbox = document.getElementById("select-all");
+
+selectAllCheckbox.addEventListener("change", (e) => {
+	let condition = false;
+	if (e.target.checked) {
+		condition = true;
+	}
+	checkAll(condition);
+});
 
 deleteButton.addEventListener("click", () => {
 	chrome.storage.sync.get(["listObject"], (result) => {
@@ -57,6 +66,17 @@ function getChecked() {
 		}
 	}
 	return checked;
+}
+
+function checkAll(condition) {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	for (let checkbox of checkBoxes) {
+		if (condition) {
+			checkbox.checked = true;
+		} else {
+			checkbox.checked = false;
+		}
+	}
 }
 
 function renderSearch(searchTerm) {
