@@ -51,81 +51,84 @@
 				</nav>
 			</section>
 
-			<section id="modal-container" class="scrollbar">
+			<section id="modal-container">
 				<div id="list">
-					<h1>Your List</h1>
-					<div class="searchbar-container">
-						<input class="list-searchbar" type="text" />
-						<img
-							class="search-icon"
-							src="./img/icons/search.svg"
-							alt="search icon"
-						/>
+					<div id="header">
+						<h1>Your List</h1>
+						<div class="searchbar-container">
+							<input class="list-searchbar" type="text" />
+							<img
+								class="search-icon"
+								src="./img/icons/search.svg"
+								alt="search icon"
+							/>
+						</div>
+						<button id="delete-button">
+							Delete
+						</button>
+						<div class="sort-titles">
+							<label id="select-all" class="checkbox">
+								<input type="checkbox" name="" id="" />
+								<span class="checkmark"></span>
+							</label>
+							<h3 class="list-title">
+								Title
+							</h3>
+							<h3 class="list-episodes">
+								Episodes Watched
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="./img/icons/chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="./img/icons/chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+							<h3 class="list-status">
+								Status
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="./img/icons/chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="./img/icons/chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+							<h3 class="list-completion">
+								Completion
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="./img/icons/chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="./img/icons/chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+						</div>
 					</div>
-					<button id="delete-button">
-						Delete
-					</button>
-					<div class="sort-titles">
-						<label class="checkbox">
-							<input type="checkbox" name="" id="" />
-							<span class="checkmark"></span>
-						</label>
-						<h3 class="list-title">
-							Title
-						</h3>
-						<h3 class="list-episodes">
-							Episodes Watched
-							<div class="sort-arrows">
-								<a href="#"
-									><img
-										class="up-arrow"
-										src="./img/icons/chevron-up.svg"
-										alt="Up arrow"
-								/></a>
-								<a href="#"
-									><img
-										class="down-arrow"
-										src="./img/icons/chevron-down.svg"
-										alt="Down arrow"
-								/></a>
-							</div>
-						</h3>
-						<h3 class="list-status">
-							Status
-							<div class="sort-arrows">
-								<a href="#"
-									><img
-										class="up-arrow"
-										src="./img/icons/chevron-up.svg"
-										alt="Up arrow"
-								/></a>
-								<a href="#"
-									><img
-										class="down-arrow"
-										src="./img/icons/chevron-down.svg"
-										alt="Down arrow"
-								/></a>
-							</div>
-						</h3>
-						<h3 class="list-completion">
-							Completion
-							<div class="sort-arrows">
-								<a href="#"
-									><img
-										class="up-arrow"
-										src="./img/icons/chevron-up.svg"
-										alt="Up arrow"
-								/></a>
-								<a href="#"
-									><img
-										class="down-arrow"
-										src="./img/icons/chevron-down.svg"
-										alt="Down arrow"
-								/></a>
-							</div>
-						</h3>
-					</div>
-					<div id="anime-container"></div>
+
+					<div id="anime-container" class="scrollbar"></div>
 				</div>
 
 				<div id="select-new-anime">

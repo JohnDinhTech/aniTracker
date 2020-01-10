@@ -133,6 +133,14 @@ body {
 	font-weight: 100;
 }
 
+#modal-container #list #header {
+	/* position: fixed; */
+	/* border: 20px solid black; */
+	top: 0;
+	right: 0;
+	left: 0;
+}
+
 /***************************
 	Scrollbar for Modal
 ***************************/
@@ -174,6 +182,10 @@ body {
 #modal-container .sort-titles .list-title {
 	text-align: left;
 	margin-left: 20px;
+}
+
+#select-all {
+	margin-left: 2px;
 }
 
 .checkbox {
@@ -293,11 +305,16 @@ input[type="checkbox"] {
 	  Anime List Display
 ***************************/
 
+#anime-container {
+	max-height: 400px;
+}
+
 .anime-display {
 	display: grid;
 	grid-template-columns: 10% 25% 25% 15% 25%;
 	padding: 10px;
 	color: #172b4d;
+	margin: 0 0 2px 2px;
 }
 
 .anime-display:nth-child(even) {
