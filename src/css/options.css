@@ -134,11 +134,7 @@ body {
 }
 
 #modal-container #list #header {
-	/* position: fixed; */
-	/* border: 20px solid black; */
-	top: 0;
-	right: 0;
-	left: 0;
+	position: relative;
 }
 
 /***************************
@@ -275,8 +271,19 @@ input[type="checkbox"] {
 /***************************
 	   Action Buttons
 ***************************/
-#delete-button {
-	background-color: #cc3f29;
+
+.button-container {
+	position: absolute;
+	right: 20px;
+	top: 27%;
+	transform: translateY(-50%);
+	display: inline-block;
+	transition: opacity 200ms ease;
+	opacity: 0;
+	z-index: -1;
+}
+
+.button {
 	font-size: 16px;
 	color: white;
 	border: none;
@@ -284,6 +291,15 @@ input[type="checkbox"] {
 	border-radius: 5px;
 	cursor: pointer;
 	outline: none;
+	margin: 10px;
+}
+
+#edit-button {
+	background-color: #ff7d12;
+}
+
+#delete-button {
+	background-color: #cc3f29;
 }
 
 /***************************
