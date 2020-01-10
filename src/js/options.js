@@ -45,6 +45,8 @@ chrome.storage.sync.get(["selection"], (result) => {
 					result.selected.watchUrl
 				);
 			});
+			chrome.storage.sync.set({ selection: false });
+			chrome.storage.local.set({ selected: [] });
 		});
 	} else {
 		chrome.storage.sync.get(["listObject"], (result) => {
@@ -98,8 +100,6 @@ function renderAnimeSelection(
 				urlTitle,
 				watchUrl
 			);
-			chrome.storage.sync.set({ selection: false });
-			chrome.storage.local.set({ selected: [] });
 			chrome.tabs.getCurrent((tab) => {
 				chrome.tabs.remove(tab.id);
 			});
