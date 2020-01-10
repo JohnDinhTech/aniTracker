@@ -261,6 +261,20 @@ input[type="checkbox"] {
 }
 
 /***************************
+	   Action Buttons
+***************************/
+#delete-button {
+	background-color: #cc3f29;
+	font-size: 16px;
+	color: white;
+	border: none;
+	padding: 10px 40px;
+	border-radius: 5px;
+	cursor: pointer;
+	outline: none;
+}
+
+/***************************
 	Anime Selection Modal
 ***************************/
 

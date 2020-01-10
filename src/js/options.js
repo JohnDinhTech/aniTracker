@@ -6,6 +6,33 @@ const listContainer = document.getElementById("anime-container");
 const selectionContainer = document.getElementById("select-new-anime");
 const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
+const deleteButton = document.getElementById("delete-button");
+
+deleteButton.addEventListener("click", () => {
+	chrome.storage.sync.get(["listObject"], (result) => {
+		const listObject = result.listObject;
+		let aniList = listObject.anime;
+		const checked = getChecked();
+		checked.forEach((id) => {
+			const foundAnime = aniList.find((anime) => {
+				return anime.mal_id === parseInt(id);
+			});
+			aniList.splice(aniList.indexOf(foundAnime), 1);
+		});
+		listObject.anime = aniList;
+		chrome.storage.sync.set({ listObject }, () => {
+			chrome.tabs.query(
+				{
+					active: true,
+					currentWindow: true
+				},
+				(tabs) => {
+					chrome.tabs.reload(tabs[0].id);
+				}
+			);
+		});
+	});
+});
 
 searchbar.addEventListener("focus", () => {
 	searchIcon.style.opacity = 0;
@@ -20,6 +47,17 @@ searchbar.addEventListener("keyup", (e) => {
 });
 
 let animeList = {};
+
+function getChecked() {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	let checked = [];
+	for (let checkbox of checkBoxes) {
+		if (checkbox.checked) {
+			checked.push(checkbox.value);
+		}
+	}
+	return checked;
+}
 
 function renderSearch(searchTerm) {
 	listContainer.innerHTML = "";
@@ -116,18 +154,18 @@ function addAnime(
 	watchUrl
 ) {
 	chrome.storage.sync.get(["listObject"], (result) => {
-		const weebList = result.listObject;
-		// console.log(weebList);
-		const condition = weebList.anime.find((obj, index) => {
+		const aniList = result.listObject;
+		// console.log(aniList);
+		const condition = aniList.anime.find((obj, index) => {
 			if (obj.mal_id === mal_id) {
-				weebList.anime[index].episodeCount = episodeCount;
-				weebList.anime[index].urlTitle.push(urlTitle);
-				weebList.anime.push(weebList.anime.splice(index, 1)[0]);
+				aniList.anime[index].episodeCount = episodeCount;
+				aniList.anime[index].urlTitle.push(urlTitle);
+				aniList.anime.push(aniList.anime.splice(index, 1)[0]);
 			}
 			return obj.mal_id === mal_id;
 		});
 		if (!condition) {
-			weebList.anime.push({
+			aniList.anime.push({
 				episodeCount,
 				mal_id,
 				image_url,
@@ -137,9 +175,9 @@ function addAnime(
 				episodeTotal: episodes,
 				urlTitle: [urlTitle]
 			});
-			console.log(weebList);
+			console.log(aniList);
 		}
-		chrome.storage.sync.set({ listObject: weebList });
+		chrome.storage.sync.set({ listObject: aniList });
 	});
 }
 
@@ -168,7 +206,7 @@ function renderAnimeList({
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
-						<input type="checkbox" id="checkbox" value="mal_id" />
+						<input type="checkbox" id="checkbox" value="${mal_id}" />
 						<span class="checkmark"></span>
 					</label>
                     <div class="title">

@@ -57,8 +57,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 				jikanjs.search("anime", titleName).then((response) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
-						const weebList = result.listObject;
-						const condition = weebList.anime.find((obj, index) => {
+						const aniList = result.listObject;
+						const condition = aniList.anime.find((obj, index) => {
 							const isIndex = obj.urlTitle.indexOf(titleName);
 							if (isIndex >= 0) {
 								console.log(episodeNumber, obj.episodeTotal);
@@ -66,20 +66,20 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 									episodeNumber < obj.episodeTotal ||
 									obj.episodeTotal === 0
 								) {
-									weebList.anime[
+									aniList.anime[
 										index
 									].watchUrl = updateWatchUrl(
 										url,
 										episodeNumberUrl[0],
 										episodeNumber
 									);
-									console.log(weebList);
+									console.log(aniList);
 								}
-								weebList.anime[
+								aniList.anime[
 									index
 								].episodeCount = episodeNumber;
-								weebList.anime.push(
-									weebList.anime.splice(index, 1)[0]
+								aniList.anime.push(
+									aniList.anime.splice(index, 1)[0]
 								);
 								return true;
 							}
@@ -115,7 +115,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 						} else {
 							chrome.storage.sync.set(
 								{
-									listObject: weebList
+									listObject: aniList
 								},
 								() => {
 									console.log("Anime list has been updated");
