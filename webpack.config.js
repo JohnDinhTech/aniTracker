@@ -63,10 +63,6 @@ var options = {
 		alias: alias
 	},
 	plugins: [
-		new webpack.EnvironmentPlugin({
-			NODE_ENV: "development", // use 'development' unless process.env.NODE_ENV is defined
-			DEBUG: false
-		}),
 		new CopyWebpackPlugin(["src/manifest.json"], { copyUnmodified: true }),
 		// clean the build folder
 		new CleanWebpackPlugin(),
