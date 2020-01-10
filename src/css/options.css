@@ -320,6 +320,7 @@ input[type="checkbox"] {
 	padding: 10px;
 	color: #172b4d;
 	margin: 0 0 2px 2px;
+	height: 60px;
 }
 
 .anime-display:nth-child(even) {
@@ -387,7 +388,6 @@ input[type="checkbox"] {
 /***************************
 	Anime Selection Modal
 ***************************/
-
 #modal-container #select-new-anime .sort-titles {
 	display: grid;
 	grid-template-columns: 25% 25% 15% 35%;
@@ -397,6 +397,7 @@ input[type="checkbox"] {
 	color: #8898aa;
 	text-transform: uppercase;
 	font-size: 11px;
+	max-height: 65vh;
 }
 
 #select-new-anime {
@@ -404,9 +405,7 @@ input[type="checkbox"] {
 }
 
 #anime-selection-container {
-	text-align: center;
-	grid-column: span 4;
-	max-height: 65vh;
+	max-height: 46vh;
 }
 
 /***************************
@@ -419,7 +418,9 @@ input[type="checkbox"] {
 }
 
 .anime-display.select {
+	display: grid;
 	grid-template-columns: 25% 25% 15% 35%;
+
 	padding: 10px;
 	color: #172b4d;
 }

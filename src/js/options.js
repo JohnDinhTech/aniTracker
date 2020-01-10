@@ -39,8 +39,13 @@ editButton.addEventListener("click", () => {
 		editButton.textContent = "Edit";
 		editButton.style.backgroundColor = "transparent";
 		editButton.style.color = "#7764e4";
+		updateEpisodes();
 	}
 });
+
+function updateEpisodes() {
+	console.log(animeList);
+}
 
 deleteButton.addEventListener("click", () => {
 	chrome.storage.sync.get(["listObject"], (result) => {
