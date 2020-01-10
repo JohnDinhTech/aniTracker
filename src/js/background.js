@@ -47,6 +47,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 					baseUrlLength,
 					url.indexOf(episodeNumberUrl) - 1
 				);
+				console.log(titleName);
 				titleName = titleName
 					.replace(/-/g, " ")
 					.split(" ")
@@ -56,7 +57,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 				jikanjs.search("anime", titleName).then((response) => {
 					chrome.storage.sync.get(["listObject"], (result) => {
 						const weebList = result.listObject;
-
 						const condition = weebList.anime.find((obj, index) => {
 							const isIndex = obj.urlTitle.indexOf(titleName);
 							if (isIndex >= 0) {
