@@ -70,11 +70,11 @@ function initCheckbox() {
 				checkedAnime.splice(checkedAnime.indexOf(checkbox.value), 1);
 			}
 			if (checkedAnime.length === 0) {
-				buttonContainer.style.opacity = 0;
-				buttonContainer.style.zIndex = -2;
+				deleteButton.style.opacity = 0;
+				deleteButton.style.zIndex = -2;
 			} else {
-				buttonContainer.style.opacity = 1;
-				buttonContainer.style.zIndex = 0;
+				deleteButton.style.opacity = 1;
+				deleteButton.style.zIndex = 0;
 			}
 		});
 		// if (checkbox.checked) {
@@ -89,13 +89,13 @@ function checkAll(condition) {
 		if (condition) {
 			checkbox.checked = true;
 			checkedAnime.push(checkbox.value);
-			buttonContainer.style.opacity = 1;
-			buttonContainer.style.zIndex = 0;
+			deleteButton.style.opacity = 1;
+			deleteButton.style.zIndex = 0;
 		} else {
 			checkbox.checked = false;
 			checkedAnime = [];
-			buttonContainer.style.opacity = 0;
-			buttonContainer.style.zIndex = -2;
+			deleteButton.style.opacity = 0;
+			deleteButton.style.zIndex = -2;
 		}
 	}
 	console.log(checkedAnime);

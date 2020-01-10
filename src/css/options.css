@@ -275,12 +275,9 @@ input[type="checkbox"] {
 .button-container {
 	position: absolute;
 	right: 20px;
-	top: 27%;
+	top: 29%;
 	transform: translateY(-50%);
 	display: inline-block;
-	transition: opacity 200ms ease;
-	opacity: 0;
-	z-index: -1;
 }
 
 .button {
@@ -292,14 +289,16 @@ input[type="checkbox"] {
 	cursor: pointer;
 	outline: none;
 	margin: 10px;
+	transition: opacity 200ms ease;
 }
 
 #edit-button {
-	background-color: #ff7d12;
+	background-color: #7764e4;
 }
-
 #delete-button {
 	background-color: #cc3f29;
+	opacity: 0;
+	z-index: -1;
 }
 
 /***************************
