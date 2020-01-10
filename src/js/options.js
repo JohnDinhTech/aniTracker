@@ -3,7 +3,8 @@ import jikanjs from "jikanjs";
 
 const listModal = document.getElementById("list");
 const listContainer = document.getElementById("anime-container");
-const selectionContainer = document.getElementById("select-new-anime");
+const selectionModal = document.getElementById("select-new-anime");
+const selectionContainer = document.getElementById("anime-selection-container");
 const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
@@ -137,7 +138,7 @@ chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
 	if (result.selection) {
 		listModal.style.display = "none";
-		selectionContainer.style.display = "block";
+		selectionModal.style.display = "block";
 		chrome.storage.local.get(["selected"], (result) => {
 			result.selected.searchResults.forEach((anime) => {
 				renderAnimeSelection(
