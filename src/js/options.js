@@ -12,6 +12,7 @@ const editButton = document.getElementById("edit-button");
 
 let checkedAnime = [];
 let editCondition = false;
+let animeList = {};
 
 selectAllCheckbox.addEventListener("change", (e) => {
 	let condition = false;
@@ -25,10 +26,19 @@ editButton.addEventListener("click", () => {
 	editCondition = !editCondition;
 	chrome.storage.sync.get(["listObject"], (result) => {
 		listContainer.innerHTML = "";
-		result.listObject.anime
-			.reverse()
-			.forEach((anime) => renderSearch(searchbar.value, editCondition));
+		result.listObject.anime.reverse().forEach((anime) => {
+			renderSearch(searchbar.value, editCondition);
+		});
 	});
+	if (editCondition) {
+		editButton.textContent = "Done";
+		editButton.style.backgroundColor = "#7764e4";
+		editButton.style.color = "white";
+	} else {
+		editButton.textContent = "Edit";
+		editButton.style.backgroundColor = "transparent";
+		editButton.style.color = "#7764e4";
+	}
 });
 
 deleteButton.addEventListener("click", () => {
@@ -68,8 +78,6 @@ searchbar.addEventListener("focusout", () => {
 searchbar.addEventListener("keyup", (e) => {
 	renderSearch(e.target.value);
 });
-
-let animeList = {};
 
 function initCheckbox() {
 	const checkBoxes = document.querySelectorAll("#checkbox");
@@ -237,10 +245,6 @@ function addAnime(
 	});
 }
 
-function displayButtons() {
-	const checkboxes = document.querySelectorAll("#checkbox");
-}
-
 function renderAnimeList(
 	{ mal_id, url, image_url, title, episodeTotal, episodeCount, watchUrl },
 	editCondition
@@ -262,7 +266,7 @@ function renderAnimeList(
 		episodeTotal = "?";
 	}
 	if (editCondition) {
-		episodeNumber = `<input id="edit-box" type="text" value=${episodeCount} mal_id=${mal_id} />`;
+		episodeNumber = `<input id="edit-box-${mal_id}" class="edit-box" type="number" value=${episodeCount} mal_id=${mal_id} />`;
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
@@ -299,4 +303,17 @@ function renderAnimeList(
 
 	animeContainer.classList.add("anime-display");
 	listContainer.appendChild(animeContainer);
+	if (editCondition) {
+		editBox(document.getElementById(`edit-box-${mal_id}`));
+	}
+}
+
+function editBox(el) {
+	el.addEventListener("change", (e) => {
+		console.log("hi");
+		if (e.target.value < 0 || e.target.value === "") {
+			e.target.value = 0;
+			console.log(el);
+		}
+	});
 }

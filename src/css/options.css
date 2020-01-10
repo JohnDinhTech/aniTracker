@@ -92,8 +92,9 @@ body {
 }
 
 #modal-container div h1 {
-	padding: 20px;
-	margin-left: 35px;
+	padding: 20px 0;
+	margin-left: 5%;
+	margin-right: 2%;
 	display: inline-block;
 }
 
@@ -275,11 +276,8 @@ input[type="checkbox"] {
 ***************************/
 
 .button-container {
-	position: absolute;
-	right: 20px;
-	top: 29%;
-	transform: translateY(-50%);
 	display: inline-block;
+	transform: translateY(-2px);
 }
 
 .button {
@@ -446,7 +444,7 @@ input[type="checkbox"] {
 	outline: none;
 }
 
-#edit-box {
+.edit-box {
 	outline: none;
 	border: 2px solid #172b4d17;
 	box-shadow: 0 3px 17px #2c28282a;
@@ -455,6 +453,7 @@ input[type="checkbox"] {
 	font-weight: 800;
 	color: #172b4d;
 	transition: box-shadow ease-in-out 150ms;
-	width: 30px;
+	width: 40px;
+	margin-right: 5px;
 	text-align: center;
 }
