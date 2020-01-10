@@ -241,6 +241,8 @@ function renderAnimeList({
 	let completionPercent = Math.ceil((episodeCount / episodeTotal) * 100);
 	let status = "Watching";
 	let color = "#11cdef";
+	const checkCondition = checkedAnime.find((id) => parseInt(id) === mal_id);
+	console.log(checkedAnime);
 	if (episodeCount === episodeTotal) {
 		status = "Completed";
 		color = "#2DCE98";
@@ -253,7 +255,9 @@ function renderAnimeList({
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
-						<input type="checkbox" id="checkbox" value="${mal_id}" />
+						<input type="checkbox" id="checkbox" ${
+							checkCondition ? "checked" : ""
+						} value="${mal_id}" />
 						<span class="checkmark"></span>
 					</label>
                     <div class="title">
