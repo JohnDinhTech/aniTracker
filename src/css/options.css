@@ -133,6 +133,10 @@ body {
 	font-weight: 100;
 }
 
+#modal-container #list #header {
+	position: relative;
+}
+
 /***************************
 	Scrollbar for Modal
 ***************************/
@@ -174,6 +178,10 @@ body {
 #modal-container .sort-titles .list-title {
 	text-align: left;
 	margin-left: 20px;
+}
+
+#select-all {
+	margin-left: 2px;
 }
 
 .checkbox {
@@ -261,6 +269,40 @@ input[type="checkbox"] {
 }
 
 /***************************
+	   Action Buttons
+***************************/
+
+.button-container {
+	position: absolute;
+	right: 20px;
+	top: 27%;
+	transform: translateY(-50%);
+	display: inline-block;
+	transition: opacity 200ms ease;
+	opacity: 0;
+	z-index: -1;
+}
+
+.button {
+	font-size: 16px;
+	color: white;
+	border: none;
+	padding: 10px 40px;
+	border-radius: 5px;
+	cursor: pointer;
+	outline: none;
+	margin: 10px;
+}
+
+#edit-button {
+	background-color: #ff7d12;
+}
+
+#delete-button {
+	background-color: #cc3f29;
+}
+
+/***************************
 	Anime Selection Modal
 ***************************/
 
@@ -279,11 +321,16 @@ input[type="checkbox"] {
 	  Anime List Display
 ***************************/
 
+#anime-container {
+	max-height: 400px;
+}
+
 .anime-display {
 	display: grid;
 	grid-template-columns: 10% 25% 25% 15% 25%;
 	padding: 10px;
 	color: #172b4d;
+	margin: 0 0 2px 2px;
 }
 
 .anime-display:nth-child(even) {

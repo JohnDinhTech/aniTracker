@@ -6,6 +6,45 @@ const listContainer = document.getElementById("anime-container");
 const selectionContainer = document.getElementById("select-new-anime");
 const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
+const deleteButton = document.getElementById("delete-button");
+const selectAllCheckbox = document.getElementById("select-all");
+const buttonContainer = document.querySelector(".button-container");
+
+let checkedAnime = [];
+
+selectAllCheckbox.addEventListener("change", (e) => {
+	let condition = false;
+	if (e.target.checked) {
+		condition = true;
+	}
+	checkAll(condition);
+});
+
+deleteButton.addEventListener("click", () => {
+	chrome.storage.sync.get(["listObject"], (result) => {
+		const listObject = result.listObject;
+		let aniList = listObject.anime;
+
+		checkedAnime.forEach((id) => {
+			const foundAnime = aniList.find((anime) => {
+				return anime.mal_id === parseInt(id);
+			});
+			aniList.splice(aniList.indexOf(foundAnime), 1);
+		});
+		listObject.anime = aniList;
+		chrome.storage.sync.set({ listObject }, () => {
+			chrome.tabs.query(
+				{
+					active: true,
+					currentWindow: true
+				},
+				(tabs) => {
+					chrome.tabs.reload(tabs[0].id);
+				}
+			);
+		});
+	});
+});
 
 searchbar.addEventListener("focus", () => {
 	searchIcon.style.opacity = 0;
@@ -16,10 +55,51 @@ searchbar.addEventListener("focusout", () => {
 });
 
 searchbar.addEventListener("keyup", (e) => {
-	console.log(renderSearch(e.target.value));
+	renderSearch(e.target.value);
 });
 
 let animeList = {};
+
+function initCheckbox() {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	for (let checkbox of checkBoxes) {
+		checkbox.addEventListener("change", () => {
+			if (checkbox.checked) {
+				checkedAnime.push(checkbox.value);
+			} else {
+				checkedAnime.splice(checkedAnime.indexOf(checkbox.value), 1);
+			}
+			if (checkedAnime.length === 0) {
+				buttonContainer.style.opacity = 0;
+				buttonContainer.style.zIndex = -2;
+			} else {
+				buttonContainer.style.opacity = 1;
+				buttonContainer.style.zIndex = 0;
+			}
+		});
+		// if (checkbox.checked) {
+		// 	checkedAnime.push(checkbox.value);
+		// }
+	}
+}
+
+function checkAll(condition) {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	for (let checkbox of checkBoxes) {
+		if (condition) {
+			checkbox.checked = true;
+			checkedAnime.push(checkbox.value);
+			buttonContainer.style.opacity = 1;
+			buttonContainer.style.zIndex = 0;
+		} else {
+			checkbox.checked = false;
+			checkedAnime = [];
+			buttonContainer.style.opacity = 0;
+			buttonContainer.style.zIndex = -2;
+		}
+	}
+	console.log(checkedAnime);
+}
 
 function renderSearch(searchTerm) {
 	listContainer.innerHTML = "";
@@ -29,6 +109,7 @@ function renderSearch(searchTerm) {
 	filteredAnime.forEach((anime) => {
 		renderAnimeList(anime);
 	});
+	initCheckbox();
 }
 
 chrome.storage.sync.get(["selection"], (result) => {
@@ -53,9 +134,9 @@ chrome.storage.sync.get(["selection"], (result) => {
 			console.log(result.listObject);
 			animeList = result.listObject.anime.reverse();
 			animeList.forEach((anime) => {
-				console.log(animeList);
 				renderAnimeList(anime);
 			});
+			initCheckbox();
 		});
 	}
 });
@@ -116,18 +197,18 @@ function addAnime(
 	watchUrl
 ) {
 	chrome.storage.sync.get(["listObject"], (result) => {
-		const weebList = result.listObject;
-		// console.log(weebList);
-		const condition = weebList.anime.find((obj, index) => {
+		const aniList = result.listObject;
+		// console.log(aniList);
+		const condition = aniList.anime.find((obj, index) => {
 			if (obj.mal_id === mal_id) {
-				weebList.anime[index].episodeCount = episodeCount;
-				weebList.anime[index].urlTitle.push(urlTitle);
-				weebList.anime.push(weebList.anime.splice(index, 1)[0]);
+				aniList.anime[index].episodeCount = episodeCount;
+				aniList.anime[index].urlTitle.push(urlTitle);
+				aniList.anime.push(aniList.anime.splice(index, 1)[0]);
 			}
 			return obj.mal_id === mal_id;
 		});
 		if (!condition) {
-			weebList.anime.push({
+			aniList.anime.push({
 				episodeCount,
 				mal_id,
 				image_url,
@@ -137,10 +218,14 @@ function addAnime(
 				episodeTotal: episodes,
 				urlTitle: [urlTitle]
 			});
-			console.log(weebList);
+			console.log(aniList);
 		}
-		chrome.storage.sync.set({ listObject: weebList });
+		chrome.storage.sync.set({ listObject: aniList });
 	});
+}
+
+function displayButtons() {
+	const checkboxes = document.querySelectorAll("#checkbox");
 }
 
 function renderAnimeList({
@@ -168,7 +253,7 @@ function renderAnimeList({
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
-						<input type="checkbox" id="checkbox" value="mal_id" />
+						<input type="checkbox" id="checkbox" value="${mal_id}" />
 						<span class="checkmark"></span>
 					</label>
                     <div class="title">
