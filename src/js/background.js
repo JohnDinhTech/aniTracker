@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
 function updateWatchUrl(url, episodeUrl, currentEpisode) {
 	const isGoGo = url.indexOf("gogoanime");
 	const isAnimeFreak = url.indexOf("animefreak");
-	if (isGoGo || isAnimeFreak > 0) {
+	if (isGoGo > 0 || isAnimeFreak > 0) {
 		const updatedEpisodeUrl = episodeUrl.replace(
 			/\d+/g,
 			currentEpisode + 1
