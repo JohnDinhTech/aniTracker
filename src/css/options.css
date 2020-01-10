@@ -94,6 +94,38 @@ body {
 #modal-container div h1 {
 	padding: 20px;
 	margin-left: 100px;
+	display: inline-block;
+}
+
+#modal-container .searchbar-container {
+	display: inline-block;
+	position: relative;
+}
+
+#modal-container .list-searchbar {
+	outline: none;
+	border: 1px solid #172b4d17;
+	box-shadow: 0 3px 17px #2c28282a;
+	border-radius: 5px;
+	font-size: 17px;
+	font-weight: 800;
+	color: #172b4d;
+	transition: box-shadow ease-in-out 150ms;
+	height: 40px;
+	padding: 0 20px;
+	padding-left: 50px;
+}
+
+#modal-container .searchbar-container .search-icon {
+	position: absolute;
+	left: 20px;
+	top: 11px;
+	pointer-events: none;
+	transition: opacity ease-out 150ms;
+}
+
+#modal-container .list-searchbar:focus {
+	box-shadow: 0 3px 18px #047c919d;
 }
 
 #modal-container .sort-titles h3 {

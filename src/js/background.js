@@ -1,4 +1,4 @@
-import "../img/weeb_track32.png";
+import "../img/aniTracker32.png";
 import jikanjs from "jikanjs";
 
 chrome.runtime.onInstalled.addListener(() => {

@@ -1,8 +1,34 @@
 import "../css/options.css";
 import jikanjs from "jikanjs";
 
-const listContainer = document.getElementById("list");
+const listContainer = document.getElementById("anime-container");
 const selectionContainer = document.getElementById("select-new-anime");
+const searchbar = document.querySelector(".list-searchbar");
+const searchIcon = document.querySelector(".search-icon");
+
+searchbar.addEventListener("focus", () => {
+	searchIcon.style.opacity = 0;
+});
+
+searchbar.addEventListener("focusout", () => {
+	searchIcon.style.opacity = 1;
+});
+
+searchbar.addEventListener("keyup", (e) => {
+	console.log(renderSearch(e.target.value));
+});
+
+let animeList = {};
+
+function renderSearch(searchTerm) {
+	listContainer.innerHTML = "";
+	const filteredAnime = animeList.filter((anime) =>
+		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+	filteredAnime.forEach((anime) => {
+		renderAnimeList(anime);
+	});
+}
 
 chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
@@ -22,8 +48,9 @@ chrome.storage.sync.get(["selection"], (result) => {
 	} else {
 		chrome.storage.sync.get(["listObject"], (result) => {
 			console.log(result.listObject);
-			result.listObject.anime.reverse().forEach((anime) => {
-				console.log(anime);
+			animeList = result.listObject.anime.reverse();
+			animeList.forEach((anime) => {
+				console.log(animeList);
 				renderAnimeList(anime);
 			});
 		});
@@ -136,10 +163,11 @@ function renderAnimeList({
 		(episodeTotal !== 0 && episodeCount > episodeTotal)
 	) {
 		completionPercent = "?";
+		episodeTotal = "?";
 	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
-						<input type="checkbox" name="" id="" />
+						<input type="checkbox" id="checkbox" value="mal_id" />
 						<span class="checkmark"></span>
 					</label>
                     <div class="title">

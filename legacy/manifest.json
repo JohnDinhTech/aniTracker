@@ -6,7 +6,7 @@
     "author": "John Duy Dinh",
     "permissions": ["declarativeContent", "tabs", "storage", "activeTab"],
     "icons": {
-        "48": "./images/weeb_track32.png"
+        "48": "./images/aniTracker32.png"
     },
 
     "background": {
@@ -15,7 +15,7 @@
     },
     "browser_action": {
         "default_icon": {
-            "32": "./images/weeb_track32.png"
+            "32": "./images/aniTracker32.png"
         },
         "default_popup": "./popup.html"
     }
