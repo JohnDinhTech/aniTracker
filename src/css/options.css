@@ -181,6 +181,11 @@ body {
 #modal-container .sort-titles .list-title {
 	text-align: left;
 	margin-left: 20px;
+	align-self: center;
+}
+
+#modal-container .sort-titles .list-status {
+	align-self: center;
 }
 
 #select-all {

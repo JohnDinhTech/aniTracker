@@ -12,6 +12,10 @@ const selectAllCheckbox = document.getElementById("select-all");
 const editButton = document.getElementById("edit-button");
 const sortByMostEpisodesBtn = document.getElementById("episode-sort-most");
 const sortByLeastEpisodesBtn = document.getElementById("episode-sort-least");
+const sortByMostCompletionBtn = document.getElementById("sort-completion-most");
+const sortByLeastCompletionBtn = document.getElementById(
+	"sort-completion-least"
+);
 
 let checkedAnime = [];
 let editCondition = false;
@@ -318,6 +322,26 @@ function editBox(el, max) {
 	});
 }
 
+function sortByMostEpisodes(sortByLeastCondition) {
+	let list = localListObject.anime;
+	list.sort((a, b) => {
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return -1;
+		}
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return 1;
+		}
+		return 0;
+	});
+	sortState.state = true;
+	if (sortByLeastCondition) {
+		sortState.list = list.reverse();
+	} else {
+		sortState.list = list;
+	}
+	renderSearch(searchbar.value, editCondition, sortState);
+}
+
 editButton.addEventListener("click", () => {
 	editCondition = !editCondition;
 	listContainer.innerHTML = "";
@@ -363,17 +387,44 @@ sortByLeastEpisodesBtn.addEventListener("click", () => {
 	sortByMostEpisodes(true);
 });
 
-function sortByMostEpisodes(sortByLeastCondition) {
+sortByMostCompletionBtn.addEventListener("click", () => {
+	sortByMostCompletion();
+});
+
+sortByLeastCompletionBtn.addEventListener("click", () => {
+	sortByMostCompletion(true);
+});
+
+function sortByMostCompletion(sortByLeastCondition) {
 	let list = localListObject.anime;
 	list.sort((a, b) => {
-		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+		const completionA = Math.ceil((a.episodeCount / a.episodeTotal) * 100);
+		const completionB = Math.ceil((b.episodeCount / b.episodeTotal) * 100);
+		const unknownPercentA =
+			a.episodeTotal === 0 || a.episodeCount > a.episodeTotal;
+
+		const unknownPercentB =
+			b.episodeTotal === 0 || b.episodeCount > b.episodeTotal;
+
+		if (unknownPercentA === false && unknownPercentB === true) {
 			return -1;
 		}
-		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+
+		if (unknownPercentA === true && unknownPercentB === false) {
 			return 1;
 		}
+
+		if (completionA > completionB) {
+			return -1;
+		}
+
+		if (completionA < completionB) {
+			return 1;
+		}
+
 		return 0;
 	});
+
 	sortState.state = true;
 	if (sortByLeastCondition) {
 		sortState.list = list.reverse();
