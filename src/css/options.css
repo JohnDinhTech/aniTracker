@@ -382,8 +382,6 @@ input[type="checkbox"] {
 .completion-progress .progress-bar-foreground {
 	background-color: #11cdef;
 	height: 3px;
-	width: 0;
-	transition: width ease-in 600ms;
 }
 
 /***************************

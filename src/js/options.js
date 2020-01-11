@@ -10,12 +10,18 @@ const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
 const selectAllCheckbox = document.getElementById("select-all");
 const editButton = document.getElementById("edit-button");
+const sortByMostEpisodesBtn = document.getElementById("episode-sort-most");
+const sortByLeastEpisodesBtn = document.getElementById("episode-sort-least");
 
 let checkedAnime = [];
 let editCondition = false;
 
 let localListObject = {};
 let episodeInputEls = [];
+let sortState = {
+	state: false,
+	list: []
+};
 
 chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
@@ -48,30 +54,6 @@ chrome.storage.sync.get(["selection"], (result) => {
 	}
 });
 
-selectAllCheckbox.addEventListener("change", (e) => {
-	let condition = false;
-	if (e.target.checked) {
-		condition = true;
-	}
-	checkAll(condition);
-});
-
-editButton.addEventListener("click", () => {
-	editCondition = !editCondition;
-	listContainer.innerHTML = "";
-	renderSearch(searchbar.value, editCondition);
-	if (editCondition) {
-		editButton.textContent = "Done";
-		editButton.style.backgroundColor = "#7764e4";
-		editButton.style.color = "white";
-	} else {
-		editButton.textContent = "Edit";
-		editButton.style.backgroundColor = "transparent";
-		editButton.style.color = "#7764e4";
-		saveList(localListObject, false);
-	}
-});
-
 function updateEpisodes() {
 	for (let el of episodeInputEls) {
 		const episodeCount = el.value;
@@ -84,6 +66,8 @@ function updateEpisodes() {
 		});
 	}
 }
+
+function sortByEpisodes() {}
 
 deleteButton.addEventListener("click", () => {
 	chrome.storage.sync.get(["listObject"], (result) => {
@@ -117,19 +101,6 @@ function saveList(newList, reloadCondition) {
 		}
 	});
 }
-
-searchbar.addEventListener("focus", () => {
-	searchIcon.style.opacity = 0;
-});
-
-searchbar.addEventListener("focusout", () => {
-	searchIcon.style.opacity = 1;
-});
-
-searchbar.addEventListener("keyup", (e) => {
-	console.log(editCondition);
-	renderSearch(e.target.value, editCondition);
-});
 
 function initCheckbox() {
 	const checkBoxes = document.querySelectorAll("#checkbox");
@@ -171,9 +142,13 @@ function checkAll(condition) {
 	console.log(checkedAnime);
 }
 
-function renderSearch(searchTerm, editCondition) {
+function renderSearch(searchTerm, editCondition, sortState) {
 	listContainer.innerHTML = "";
-	const filteredAnime = localListObject.anime.filter((anime) =>
+	let list = localListObject.anime;
+	if (sortState.state) {
+		let list = sortState.list;
+	}
+	const filteredAnime = list.filter((anime) =>
 		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 	filteredAnime.forEach((anime) => {
@@ -341,4 +316,69 @@ function editBox(el, max) {
 
 		updateEpisodes();
 	});
+}
+
+editButton.addEventListener("click", () => {
+	editCondition = !editCondition;
+	listContainer.innerHTML = "";
+	renderSearch(searchbar.value, editCondition, sortState);
+	if (editCondition) {
+		editButton.textContent = "Done";
+		editButton.style.backgroundColor = "#7764e4";
+		editButton.style.color = "white";
+	} else {
+		editButton.textContent = "Edit";
+		editButton.style.backgroundColor = "transparent";
+		editButton.style.color = "#7764e4";
+		saveList(localListObject, false);
+	}
+});
+
+searchbar.addEventListener("focus", () => {
+	searchIcon.style.opacity = 0;
+});
+
+searchbar.addEventListener("focusout", () => {
+	searchIcon.style.opacity = 1;
+});
+
+searchbar.addEventListener("keyup", (e) => {
+	console.log(editCondition);
+	renderSearch(e.target.value, editCondition, sortState);
+});
+
+selectAllCheckbox.addEventListener("change", (e) => {
+	let condition = false;
+	if (e.target.checked) {
+		condition = true;
+	}
+	checkAll(condition);
+});
+
+sortByMostEpisodesBtn.addEventListener("click", () => {
+	sortByMostEpisodes();
+});
+
+sortByLeastEpisodesBtn.addEventListener("click", () => {
+	sortByMostEpisodes(true);
+});
+
+function sortByMostEpisodes(sortByLeastCondition) {
+	let list = localListObject.anime;
+	list.sort((a, b) => {
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return -1;
+		}
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return 1;
+		}
+		return 0;
+	});
+	sortState.state = true;
+	if (sortByLeastCondition) {
+		sortState.list = list.reverse();
+	} else {
+		sortState.list = list;
+	}
+	renderSearch(searchbar.value, editCondition, sortState);
 }
