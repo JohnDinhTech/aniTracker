@@ -10,12 +10,22 @@ const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
 const selectAllCheckbox = document.getElementById("select-all");
 const editButton = document.getElementById("edit-button");
+const sortByMostEpisodesBtn = document.getElementById("episode-sort-most");
+const sortByLeastEpisodesBtn = document.getElementById("episode-sort-least");
+const sortByMostCompletionBtn = document.getElementById("sort-completion-most");
+const sortByLeastCompletionBtn = document.getElementById(
+	"sort-completion-least"
+);
 
 let checkedAnime = [];
 let editCondition = false;
 
 let localListObject = {};
 let episodeInputEls = [];
+let sortState = {
+	state: false,
+	list: []
+};
 
 chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
@@ -38,40 +48,13 @@ chrome.storage.sync.get(["selection"], (result) => {
 		chrome.storage.sync.get(["listObject"], (result) => {
 			console.log(result.listObject);
 			localListObject = result.listObject;
-			localListObject.anime.forEach((anime) => {
+			const aniList = localListObject.anime;
+			console.log(aniList);
+			aniList.forEach((anime) => {
 				renderAnimeList(anime);
 			});
 			initCheckbox();
 		});
-	}
-});
-
-selectAllCheckbox.addEventListener("change", (e) => {
-	let condition = false;
-	if (e.target.checked) {
-		condition = true;
-	}
-	checkAll(condition);
-});
-
-editButton.addEventListener("click", () => {
-	editCondition = !editCondition;
-	console.log(localListObject);
-	chrome.storage.sync.get(["listObject"], (result) => {
-		listContainer.innerHTML = "";
-		result.listObject.anime.forEach((anime) => {
-			renderAnimeList(anime, editCondition);
-		});
-	});
-	if (editCondition) {
-		editButton.textContent = "Done";
-		editButton.style.backgroundColor = "#7764e4";
-		editButton.style.color = "white";
-	} else {
-		editButton.textContent = "Edit";
-		editButton.style.backgroundColor = "transparent";
-		editButton.style.color = "#7764e4";
-		updateEpisodes();
 	}
 });
 
@@ -85,9 +68,10 @@ function updateEpisodes() {
 			}
 			return anime.mal_id === animeId;
 		});
-		saveList(localListObject, true);
 	}
 }
+
+function sortByEpisodes() {}
 
 deleteButton.addEventListener("click", () => {
 	chrome.storage.sync.get(["listObject"], (result) => {
@@ -106,6 +90,7 @@ deleteButton.addEventListener("click", () => {
 });
 
 function saveList(newList, reloadCondition) {
+	console.log(newList);
 	chrome.storage.sync.set({ listObject: newList }, () => {
 		if (reloadCondition) {
 			chrome.tabs.query(
@@ -120,18 +105,6 @@ function saveList(newList, reloadCondition) {
 		}
 	});
 }
-
-searchbar.addEventListener("focus", () => {
-	searchIcon.style.opacity = 0;
-});
-
-searchbar.addEventListener("focusout", () => {
-	searchIcon.style.opacity = 1;
-});
-
-searchbar.addEventListener("keyup", (e) => {
-	renderSearch(e.target.value);
-});
 
 function initCheckbox() {
 	const checkBoxes = document.querySelectorAll("#checkbox");
@@ -173,9 +146,13 @@ function checkAll(condition) {
 	console.log(checkedAnime);
 }
 
-function renderSearch(searchTerm, editCondition) {
+function renderSearch(searchTerm, editCondition, sortState) {
 	listContainer.innerHTML = "";
-	const filteredAnime = localListObject.anime.filter((anime) =>
+	let list = localListObject.anime;
+	if (sortState.state) {
+		let list = sortState.list;
+	}
+	const filteredAnime = list.filter((anime) =>
 		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 	filteredAnime.forEach((anime) => {
@@ -224,9 +201,6 @@ function renderAnimeSelection(
 				urlTitle,
 				watchUrl
 			);
-			chrome.tabs.getCurrent((tab) => {
-				chrome.tabs.remove(tab.id);
-			});
 		});
 
 	animeContainer.classList.add("anime-display", "select");
@@ -250,7 +224,7 @@ function addAnime(
 			return obj.mal_id === mal_id;
 		});
 		if (!condition) {
-			aniList.anime.push({
+			aniList.anime.unshift({
 				episodeCount,
 				mal_id,
 				image_url,
@@ -263,6 +237,9 @@ function addAnime(
 			console.log(aniList);
 		}
 		saveList(aniList, false);
+		chrome.tabs.getCurrent((tab) => {
+			chrome.tabs.remove(tab.id);
+		});
 	});
 }
 
@@ -276,7 +253,7 @@ function renderAnimeList(
 	let color = "#11cdef";
 	const checkCondition = checkedAnime.find((id) => parseInt(id) === mal_id);
 	let episodeNumber = episodeCount;
-	if (episodeCount === episodeTotal) {
+	if (parseInt(episodeCount) === episodeTotal) {
 		status = "Completed";
 		color = "#2DCE98";
 	} else if (
@@ -287,6 +264,7 @@ function renderAnimeList(
 		episodeTotal = "?";
 	}
 	if (editCondition) {
+		console.log("editing");
 		episodeNumber = `<input id="edit-box-${mal_id}" class="edit-box" type="number" value=${episodeCount} mal_id=${mal_id} />`;
 	}
 
@@ -332,12 +310,126 @@ function renderAnimeList(
 
 function editBox(el, max) {
 	el.addEventListener("change", (e) => {
-		if (e.target.value < 0 || e.target.value === "") {
-			e.target.value = 0;
-		} else if (e.target.value > 2500) {
-			e.target.value = 2500;
+		if (e.target.value < 1 || e.target.value === "") {
+			e.target.value = 1;
 		} else if (e.target.value > max && max !== 0) {
 			e.target.value = max;
+		} else if (e.target.value > 2500) {
+			e.target.value = 2500;
 		}
+
+		updateEpisodes();
 	});
+}
+
+function sortByMostEpisodes(sortByLeastCondition) {
+	let list = localListObject.anime;
+	list.sort((a, b) => {
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return -1;
+		}
+		if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+			return 1;
+		}
+		return 0;
+	});
+	sortState.state = true;
+	if (sortByLeastCondition) {
+		sortState.list = list.reverse();
+	} else {
+		sortState.list = list;
+	}
+	renderSearch(searchbar.value, editCondition, sortState);
+}
+
+editButton.addEventListener("click", () => {
+	editCondition = !editCondition;
+	listContainer.innerHTML = "";
+	renderSearch(searchbar.value, editCondition, sortState);
+	if (editCondition) {
+		editButton.textContent = "Done";
+		editButton.style.backgroundColor = "#7764e4";
+		editButton.style.color = "white";
+	} else {
+		editButton.textContent = "Edit";
+		editButton.style.backgroundColor = "transparent";
+		editButton.style.color = "#7764e4";
+		saveList(localListObject, false);
+	}
+});
+
+searchbar.addEventListener("focus", () => {
+	searchIcon.style.opacity = 0;
+});
+
+searchbar.addEventListener("focusout", () => {
+	searchIcon.style.opacity = 1;
+});
+
+searchbar.addEventListener("keyup", (e) => {
+	console.log(editCondition);
+	renderSearch(e.target.value, editCondition, sortState);
+});
+
+selectAllCheckbox.addEventListener("change", (e) => {
+	let condition = false;
+	if (e.target.checked) {
+		condition = true;
+	}
+	checkAll(condition);
+});
+
+sortByMostEpisodesBtn.addEventListener("click", () => {
+	sortByMostEpisodes();
+});
+
+sortByLeastEpisodesBtn.addEventListener("click", () => {
+	sortByMostEpisodes(true);
+});
+
+sortByMostCompletionBtn.addEventListener("click", () => {
+	sortByMostCompletion();
+});
+
+sortByLeastCompletionBtn.addEventListener("click", () => {
+	sortByMostCompletion(true);
+});
+
+function sortByMostCompletion(sortByLeastCondition) {
+	let list = localListObject.anime;
+	list.sort((a, b) => {
+		const completionA = Math.ceil((a.episodeCount / a.episodeTotal) * 100);
+		const completionB = Math.ceil((b.episodeCount / b.episodeTotal) * 100);
+		const unknownPercentA =
+			a.episodeTotal === 0 || a.episodeCount > a.episodeTotal;
+
+		const unknownPercentB =
+			b.episodeTotal === 0 || b.episodeCount > b.episodeTotal;
+
+		if (unknownPercentA === false && unknownPercentB === true) {
+			return -1;
+		}
+
+		if (unknownPercentA === true && unknownPercentB === false) {
+			return 1;
+		}
+
+		if (completionA > completionB) {
+			return -1;
+		}
+
+		if (completionA < completionB) {
+			return 1;
+		}
+
+		return 0;
+	});
+
+	sortState.state = true;
+	if (sortByLeastCondition) {
+		sortState.list = list.reverse();
+	} else {
+		sortState.list = list;
+	}
+	renderSearch(searchbar.value, editCondition, sortState);
 }

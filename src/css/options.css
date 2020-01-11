@@ -181,6 +181,11 @@ body {
 #modal-container .sort-titles .list-title {
 	text-align: left;
 	margin-left: 20px;
+	align-self: center;
+}
+
+#modal-container .sort-titles .list-status {
+	align-self: center;
 }
 
 #select-all {
@@ -382,7 +387,6 @@ input[type="checkbox"] {
 .completion-progress .progress-bar-foreground {
 	background-color: #11cdef;
 	height: 3px;
-	width: 30%;
 }
 
 /***************************
@@ -420,7 +424,7 @@ input[type="checkbox"] {
 .anime-display.select {
 	display: grid;
 	grid-template-columns: 25% 25% 15% 35%;
-
+	height: auto;
 	padding: 10px;
 	color: #172b4d;
 }
@@ -456,7 +460,7 @@ input[type="checkbox"] {
 	font-weight: 800;
 	color: #172b4d;
 	transition: box-shadow ease-in-out 150ms;
-	width: 40px;
+	width: 50px;
 	margin-right: 5px;
 	text-align: center;
 }
