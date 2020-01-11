@@ -3,120 +3,25 @@ import jikanjs from "jikanjs";
 
 const listModal = document.getElementById("list");
 const listContainer = document.getElementById("anime-container");
-const selectionContainer = document.getElementById("select-new-anime");
+const selectionModal = document.getElementById("select-new-anime");
+const selectionContainer = document.getElementById("anime-selection-container");
 const searchbar = document.querySelector(".list-searchbar");
 const searchIcon = document.querySelector(".search-icon");
 const deleteButton = document.getElementById("delete-button");
 const selectAllCheckbox = document.getElementById("select-all");
-const buttonContainer = document.querySelector(".button-container");
+const editButton = document.getElementById("edit-button");
 
 let checkedAnime = [];
+let editCondition = false;
 
-selectAllCheckbox.addEventListener("change", (e) => {
-	let condition = false;
-	if (e.target.checked) {
-		condition = true;
-	}
-	checkAll(condition);
-});
-
-deleteButton.addEventListener("click", () => {
-	chrome.storage.sync.get(["listObject"], (result) => {
-		const listObject = result.listObject;
-		let aniList = listObject.anime;
-
-		checkedAnime.forEach((id) => {
-			const foundAnime = aniList.find((anime) => {
-				return anime.mal_id === parseInt(id);
-			});
-			aniList.splice(aniList.indexOf(foundAnime), 1);
-		});
-		listObject.anime = aniList;
-		chrome.storage.sync.set({ listObject }, () => {
-			chrome.tabs.query(
-				{
-					active: true,
-					currentWindow: true
-				},
-				(tabs) => {
-					chrome.tabs.reload(tabs[0].id);
-				}
-			);
-		});
-	});
-});
-
-searchbar.addEventListener("focus", () => {
-	searchIcon.style.opacity = 0;
-});
-
-searchbar.addEventListener("focusout", () => {
-	searchIcon.style.opacity = 1;
-});
-
-searchbar.addEventListener("keyup", (e) => {
-	renderSearch(e.target.value);
-});
-
-let animeList = {};
-
-function initCheckbox() {
-	const checkBoxes = document.querySelectorAll("#checkbox");
-	for (let checkbox of checkBoxes) {
-		checkbox.addEventListener("change", () => {
-			if (checkbox.checked) {
-				checkedAnime.push(checkbox.value);
-			} else {
-				checkedAnime.splice(checkedAnime.indexOf(checkbox.value), 1);
-			}
-			if (checkedAnime.length === 0) {
-				buttonContainer.style.opacity = 0;
-				buttonContainer.style.zIndex = -2;
-			} else {
-				buttonContainer.style.opacity = 1;
-				buttonContainer.style.zIndex = 0;
-			}
-		});
-		// if (checkbox.checked) {
-		// 	checkedAnime.push(checkbox.value);
-		// }
-	}
-}
-
-function checkAll(condition) {
-	const checkBoxes = document.querySelectorAll("#checkbox");
-	for (let checkbox of checkBoxes) {
-		if (condition) {
-			checkbox.checked = true;
-			checkedAnime.push(checkbox.value);
-			buttonContainer.style.opacity = 1;
-			buttonContainer.style.zIndex = 0;
-		} else {
-			checkbox.checked = false;
-			checkedAnime = [];
-			buttonContainer.style.opacity = 0;
-			buttonContainer.style.zIndex = -2;
-		}
-	}
-	console.log(checkedAnime);
-}
-
-function renderSearch(searchTerm) {
-	listContainer.innerHTML = "";
-	const filteredAnime = animeList.filter((anime) =>
-		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
-	);
-	filteredAnime.forEach((anime) => {
-		renderAnimeList(anime);
-	});
-	initCheckbox();
-}
+let localListObject = {};
+let episodeInputEls = [];
 
 chrome.storage.sync.get(["selection"], (result) => {
 	console.log(result.selection);
 	if (result.selection) {
 		listModal.style.display = "none";
-		selectionContainer.style.display = "block";
+		selectionModal.style.display = "block";
 		chrome.storage.local.get(["selected"], (result) => {
 			result.selected.searchResults.forEach((anime) => {
 				renderAnimeSelection(
@@ -132,14 +37,152 @@ chrome.storage.sync.get(["selection"], (result) => {
 	} else {
 		chrome.storage.sync.get(["listObject"], (result) => {
 			console.log(result.listObject);
-			animeList = result.listObject.anime.reverse();
-			animeList.forEach((anime) => {
+			localListObject = result.listObject;
+			localListObject.anime.forEach((anime) => {
 				renderAnimeList(anime);
 			});
 			initCheckbox();
 		});
 	}
 });
+
+selectAllCheckbox.addEventListener("change", (e) => {
+	let condition = false;
+	if (e.target.checked) {
+		condition = true;
+	}
+	checkAll(condition);
+});
+
+editButton.addEventListener("click", () => {
+	editCondition = !editCondition;
+	console.log(localListObject);
+	chrome.storage.sync.get(["listObject"], (result) => {
+		listContainer.innerHTML = "";
+		result.listObject.anime.forEach((anime) => {
+			renderAnimeList(anime, editCondition);
+		});
+	});
+	if (editCondition) {
+		editButton.textContent = "Done";
+		editButton.style.backgroundColor = "#7764e4";
+		editButton.style.color = "white";
+	} else {
+		editButton.textContent = "Edit";
+		editButton.style.backgroundColor = "transparent";
+		editButton.style.color = "#7764e4";
+		updateEpisodes();
+	}
+});
+
+function updateEpisodes() {
+	for (let el of episodeInputEls) {
+		const episodeCount = el.value;
+		const animeId = parseInt(el.getAttribute("mal_id"));
+		const matchingAnime = localListObject.anime.find((anime) => {
+			if (anime.mal_id === animeId) {
+				anime.episodeCount = episodeCount;
+			}
+			return anime.mal_id === animeId;
+		});
+		saveList(localListObject, true);
+	}
+}
+
+deleteButton.addEventListener("click", () => {
+	chrome.storage.sync.get(["listObject"], (result) => {
+		const listObject = result.listObject;
+		let aniList = listObject.anime;
+
+		checkedAnime.forEach((id) => {
+			const foundAnime = aniList.find((anime) => {
+				return anime.mal_id === parseInt(id);
+			});
+			aniList.splice(aniList.indexOf(foundAnime), 1);
+		});
+		listObject.anime = aniList;
+		saveList(listObject, true);
+	});
+});
+
+function saveList(newList, reloadCondition) {
+	chrome.storage.sync.set({ listObject: newList }, () => {
+		if (reloadCondition) {
+			chrome.tabs.query(
+				{
+					active: true,
+					currentWindow: true
+				},
+				(tabs) => {
+					chrome.tabs.reload(tabs[0].id);
+				}
+			);
+		}
+	});
+}
+
+searchbar.addEventListener("focus", () => {
+	searchIcon.style.opacity = 0;
+});
+
+searchbar.addEventListener("focusout", () => {
+	searchIcon.style.opacity = 1;
+});
+
+searchbar.addEventListener("keyup", (e) => {
+	renderSearch(e.target.value);
+});
+
+function initCheckbox() {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	for (let checkbox of checkBoxes) {
+		checkbox.addEventListener("change", () => {
+			if (checkbox.checked) {
+				checkedAnime.push(checkbox.value);
+			} else {
+				checkedAnime.splice(checkedAnime.indexOf(checkbox.value), 1);
+			}
+			if (checkedAnime.length === 0) {
+				deleteButton.style.opacity = 0;
+				deleteButton.disabled = true;
+				deleteButton.style.cursor = "context-menu";
+			} else {
+				deleteButton.style.opacity = 1;
+				deleteButton.disabled = false;
+				deleteButton.style.cursor = "pointer";
+			}
+		});
+	}
+}
+
+function checkAll(condition) {
+	const checkBoxes = document.querySelectorAll("#checkbox");
+	for (let checkbox of checkBoxes) {
+		if (condition) {
+			checkbox.checked = true;
+			checkedAnime.push(checkbox.value);
+			deleteButton.style.opacity = 1;
+			deleteButton.style.zIndex = 0;
+		} else {
+			checkbox.checked = false;
+			checkedAnime = [];
+			deleteButton.style.opacity = 0;
+			deleteButton.style.zIndex = -2;
+		}
+	}
+	console.log(checkedAnime);
+}
+
+function renderSearch(searchTerm, editCondition) {
+	listContainer.innerHTML = "";
+	const filteredAnime = localListObject.anime.filter((anime) =>
+		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+	filteredAnime.forEach((anime) => {
+		renderAnimeList(anime, editCondition);
+	});
+	initCheckbox();
+}
 
 function renderAnimeSelection(
 	{ mal_id, url, image_url, title, episodes },
@@ -198,7 +241,6 @@ function addAnime(
 ) {
 	chrome.storage.sync.get(["listObject"], (result) => {
 		const aniList = result.listObject;
-		// console.log(aniList);
 		const condition = aniList.anime.find((obj, index) => {
 			if (obj.mal_id === mal_id) {
 				aniList.anime[index].episodeCount = episodeCount;
@@ -220,27 +262,20 @@ function addAnime(
 			});
 			console.log(aniList);
 		}
-		chrome.storage.sync.set({ listObject: aniList });
+		saveList(aniList, false);
 	});
 }
 
-function displayButtons() {
-	const checkboxes = document.querySelectorAll("#checkbox");
-}
-
-function renderAnimeList({
-	mal_id,
-	url,
-	image_url,
-	title,
-	episodeTotal,
-	episodeCount,
-	watchUrl
-}) {
+function renderAnimeList(
+	{ mal_id, url, image_url, title, episodeTotal, episodeCount, watchUrl },
+	editCondition
+) {
 	const animeContainer = document.createElement("div");
 	let completionPercent = Math.ceil((episodeCount / episodeTotal) * 100);
 	let status = "Watching";
 	let color = "#11cdef";
+	const checkCondition = checkedAnime.find((id) => parseInt(id) === mal_id);
+	let episodeNumber = episodeCount;
 	if (episodeCount === episodeTotal) {
 		status = "Completed";
 		color = "#2DCE98";
@@ -251,9 +286,14 @@ function renderAnimeList({
 		completionPercent = "?";
 		episodeTotal = "?";
 	}
+	if (editCondition) {
+		episodeNumber = `<input id="edit-box-${mal_id}" class="edit-box" type="number" value=${episodeCount} mal_id=${mal_id} />`;
+	}
 
 	animeContainer.innerHTML = `<label class="checkbox">
-						<input type="checkbox" id="checkbox" value="${mal_id}" />
+						<input type="checkbox" id="checkbox" ${
+							checkCondition ? "checked" : ""
+						} value="${mal_id}" />
 						<span class="checkmark"></span>
 					</label>
                     <div class="title">
@@ -265,7 +305,7 @@ function renderAnimeList({
                     </a>
 					</div>
 					<div class="episode-count">
-						<span id="watched-episodes">${episodeCount}</span>
+						<span id="watched-episodes">${episodeNumber}</span>
 						/
 						<span id="total-episodes">${episodeTotal}</span>
 					</div>
@@ -284,4 +324,20 @@ function renderAnimeList({
 
 	animeContainer.classList.add("anime-display");
 	listContainer.appendChild(animeContainer);
+	if (editCondition) {
+		editBox(document.getElementById(`edit-box-${mal_id}`), episodeTotal);
+		episodeInputEls.push(document.getElementById(`edit-box-${mal_id}`));
+	}
+}
+
+function editBox(el, max) {
+	el.addEventListener("change", (e) => {
+		if (e.target.value < 0 || e.target.value === "") {
+			e.target.value = 0;
+		} else if (e.target.value > 2500) {
+			e.target.value = 2500;
+		} else if (e.target.value > max && max !== 0) {
+			e.target.value = max;
+		}
+	});
 }
