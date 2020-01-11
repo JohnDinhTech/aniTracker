@@ -13,7 +13,38 @@ const editButton = document.getElementById("edit-button");
 
 let checkedAnime = [];
 let editCondition = false;
-let animeList = {};
+
+let localListObject = {};
+let episodeInputEls = [];
+
+chrome.storage.sync.get(["selection"], (result) => {
+	console.log(result.selection);
+	if (result.selection) {
+		listModal.style.display = "none";
+		selectionModal.style.display = "block";
+		chrome.storage.local.get(["selected"], (result) => {
+			result.selected.searchResults.forEach((anime) => {
+				renderAnimeSelection(
+					anime,
+					result.selected.currentEpisode,
+					result.selected.urlTitle,
+					result.selected.watchUrl
+				);
+			});
+			chrome.storage.sync.set({ selection: false });
+			chrome.storage.local.set({ selected: [] });
+		});
+	} else {
+		chrome.storage.sync.get(["listObject"], (result) => {
+			console.log(result.listObject);
+			localListObject = result.listObject;
+			localListObject.anime.forEach((anime) => {
+				renderAnimeList(anime);
+			});
+			initCheckbox();
+		});
+	}
+});
 
 selectAllCheckbox.addEventListener("change", (e) => {
 	let condition = false;
@@ -25,10 +56,11 @@ selectAllCheckbox.addEventListener("change", (e) => {
 
 editButton.addEventListener("click", () => {
 	editCondition = !editCondition;
+	console.log(localListObject);
 	chrome.storage.sync.get(["listObject"], (result) => {
 		listContainer.innerHTML = "";
-		result.listObject.anime.reverse().forEach((anime) => {
-			renderSearch(searchbar.value, editCondition);
+		result.listObject.anime.forEach((anime) => {
+			renderAnimeList(anime, editCondition);
 		});
 	});
 	if (editCondition) {
@@ -44,7 +76,17 @@ editButton.addEventListener("click", () => {
 });
 
 function updateEpisodes() {
-	console.log(animeList);
+	for (let el of episodeInputEls) {
+		const episodeCount = el.value;
+		const animeId = parseInt(el.getAttribute("mal_id"));
+		const matchingAnime = localListObject.anime.find((anime) => {
+			if (anime.mal_id === animeId) {
+				anime.episodeCount = episodeCount;
+			}
+			return anime.mal_id === animeId;
+		});
+		saveList(localListObject, true);
+	}
 }
 
 deleteButton.addEventListener("click", () => {
@@ -59,7 +101,13 @@ deleteButton.addEventListener("click", () => {
 			aniList.splice(aniList.indexOf(foundAnime), 1);
 		});
 		listObject.anime = aniList;
-		chrome.storage.sync.set({ listObject }, () => {
+		saveList(listObject, true);
+	});
+});
+
+function saveList(newList, reloadCondition) {
+	chrome.storage.sync.set({ listObject: newList }, () => {
+		if (reloadCondition) {
 			chrome.tabs.query(
 				{
 					active: true,
@@ -69,9 +117,9 @@ deleteButton.addEventListener("click", () => {
 					chrome.tabs.reload(tabs[0].id);
 				}
 			);
-		});
+		}
 	});
-});
+}
 
 searchbar.addEventListener("focus", () => {
 	searchIcon.style.opacity = 0;
@@ -104,9 +152,6 @@ function initCheckbox() {
 				deleteButton.style.cursor = "pointer";
 			}
 		});
-		// if (checkbox.checked) {
-		// 	checkedAnime.push(checkbox.value);
-		// }
 	}
 }
 
@@ -130,7 +175,7 @@ function checkAll(condition) {
 
 function renderSearch(searchTerm, editCondition) {
 	listContainer.innerHTML = "";
-	const filteredAnime = animeList.filter((anime) =>
+	const filteredAnime = localListObject.anime.filter((anime) =>
 		anime.title.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 	filteredAnime.forEach((anime) => {
@@ -138,35 +183,6 @@ function renderSearch(searchTerm, editCondition) {
 	});
 	initCheckbox();
 }
-
-chrome.storage.sync.get(["selection"], (result) => {
-	console.log(result.selection);
-	if (result.selection) {
-		listModal.style.display = "none";
-		selectionModal.style.display = "block";
-		chrome.storage.local.get(["selected"], (result) => {
-			result.selected.searchResults.forEach((anime) => {
-				renderAnimeSelection(
-					anime,
-					result.selected.currentEpisode,
-					result.selected.urlTitle,
-					result.selected.watchUrl
-				);
-			});
-			chrome.storage.sync.set({ selection: false });
-			chrome.storage.local.set({ selected: [] });
-		});
-	} else {
-		chrome.storage.sync.get(["listObject"], (result) => {
-			console.log(result.listObject);
-			animeList = result.listObject.anime.reverse();
-			animeList.forEach((anime) => {
-				renderAnimeList(anime);
-			});
-			initCheckbox();
-		});
-	}
-});
 
 function renderAnimeSelection(
 	{ mal_id, url, image_url, title, episodes },
@@ -225,7 +241,6 @@ function addAnime(
 ) {
 	chrome.storage.sync.get(["listObject"], (result) => {
 		const aniList = result.listObject;
-		// console.log(aniList);
 		const condition = aniList.anime.find((obj, index) => {
 			if (obj.mal_id === mal_id) {
 				aniList.anime[index].episodeCount = episodeCount;
@@ -247,7 +262,7 @@ function addAnime(
 			});
 			console.log(aniList);
 		}
-		chrome.storage.sync.set({ listObject: aniList });
+		saveList(aniList, false);
 	});
 }
 
@@ -310,16 +325,19 @@ function renderAnimeList(
 	animeContainer.classList.add("anime-display");
 	listContainer.appendChild(animeContainer);
 	if (editCondition) {
-		editBox(document.getElementById(`edit-box-${mal_id}`));
+		editBox(document.getElementById(`edit-box-${mal_id}`), episodeTotal);
+		episodeInputEls.push(document.getElementById(`edit-box-${mal_id}`));
 	}
 }
 
-function editBox(el) {
+function editBox(el, max) {
 	el.addEventListener("change", (e) => {
-		console.log("hi");
 		if (e.target.value < 0 || e.target.value === "") {
 			e.target.value = 0;
-			console.log(el);
+		} else if (e.target.value > 2500) {
+			e.target.value = 2500;
+		} else if (e.target.value > max && max !== 0) {
+			e.target.value = max;
 		}
 	});
 }
