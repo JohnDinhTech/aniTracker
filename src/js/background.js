@@ -166,7 +166,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 					baseUrlLength,
 					url.indexOf(episodeNumberUrl) - 1
 				);
-				console.log(titleName);
 				titleName = titleName
 					.replace(/-/g, " ")
 					.split(" ")
@@ -196,9 +195,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 								aniList.anime[
 									index
 								].episodeCount = episodeNumber;
-								aniList.anime.push(
-									aniList.anime.splice(index, 1)[0]
-								);
+								const matchingAnime = aniList.anime[index];
+								aniList.anime.splice(index, 1);
+								aniList.anime.unshift(matchingAnime);
 								return true;
 							}
 						});
