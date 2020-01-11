@@ -421,7 +421,7 @@ input[type="checkbox"] {
 .anime-display.select {
 	display: grid;
 	grid-template-columns: 25% 25% 15% 35%;
-
+	height: auto;
 	padding: 10px;
 	color: #172b4d;
 }
