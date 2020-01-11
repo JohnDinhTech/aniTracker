@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>aniTracker Options</title>
+	</head>
+	<body>
+		<div class="background">
+			<section id="side-menu">
+				<h1 class="logo-title">
+					<img
+						class="logo"
+						src="aniTracker32.png"
+						alt="aniTrack Logo"
+					/>
+					aniTracker
+				</h1>
+				<nav>
+					<a class="active" href="#">
+						<img
+							class="menu-icon home-icon"
+							src="home.svg"
+							alt="Home Icon"
+						/>
+						Home
+					</a>
+					<a href="#">
+						<img
+							class="menu-icon sync-icon"
+							src="copy.svg"
+							alt="Copy Icon"
+						/>
+						Sync With MyAnimeList
+					</a>
+					<a href="#">
+						<img
+							class="menu-icon heart-icon"
+							src="heart.svg"
+							alt="Heart Icon"
+						/>
+						Support
+					</a>
+					<a href="#">
+						<img
+							class="menu-icon settings-icon"
+							src="settings.svg"
+							alt="Cog Icon"
+						/>
+						Settings
+					</a>
+				</nav>
+			</section>
+
+			<section id="modal-container">
+				<div id="list">
+					<div id="header">
+						<h1>Your List</h1>
+						<div class="searchbar-container">
+							<input class="list-searchbar" type="text" />
+							<img
+								class="search-icon"
+								src="search.svg"
+								alt="search icon"
+							/>
+						</div>
+						<div class="button-container">
+							<button id="edit-button" class="button">
+								Edit
+							</button>
+
+							<button id="delete-button" class="button" disabled>
+								Delete
+							</button>
+						</div>
+						<div class="sort-titles">
+							<label id="select-all" class="checkbox">
+								<input type="checkbox" name="" id="" />
+								<span class="checkmark"></span>
+							</label>
+							<h3 class="list-title">
+								Title
+							</h3>
+							<h3 class="list-episodes">
+								Episodes Watched
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+							<h3 class="list-status">
+								Status
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+							<h3 class="list-completion">
+								Completion
+								<div class="sort-arrows">
+									<a href="#"
+										><img
+											class="up-arrow"
+											src="chevron-up.svg"
+											alt="Up arrow"
+									/></a>
+									<a href="#"
+										><img
+											class="down-arrow"
+											src="chevron-down.svg"
+											alt="Down arrow"
+									/></a>
+								</div>
+							</h3>
+						</div>
+					</div>
+
+					<div id="anime-container" class="scrollbar"></div>
+				</div>
+
+				<div id="select-new-anime">
+					<h1>
+						Select the anime you're about to watch! (We only show
+						this once for each anime)
+					</h1>
+					<div class="sort-titles">
+						<h3 class="list-title">
+							Title
+						</h3>
+						<h3 class="list-episodes">
+							Total Episodes
+						</h3>
+						<h3>
+							Link to MAL
+						</h3>
+					</div>
+					<div id="anime-selection-container" class="scrollbar"></div>
+					<!-- <div class="anime-display select">
+						<div class="title">
+							<img
+								src="https://cdn.myanimelist.net/images/anime/12/89878l.jpg"
+								alt=""
+							/>
+							<h2>Sora yori mo Tooi Basho</h2>
+						</div>
+						<div class="episode-count">
+							<span id="total-episodes">13</span>
+						</div>
+						<div class="link-to-mal">
+							<a
+								target="_blank"
+								href="https://myanimelist.net/anime/35839/Sora_yori_mo_Tooi_Basho"
+								>MyAnimeList</a
+							>
+						</div>
+						<div class="select-button">
+							<button>Select</button>
+						</div>
+					</div> -->
+				</div>
+
+				<!-- <div class="anime-display">
+					<label class="checkbox">
+						<input type="checkbox" name="" id="" />
+						<span class="checkmark"></span>
+					</label>
+					<div class="title">
+						<img
+							src="https://cdn.myanimelist.net/images/anime/12/89878l.jpg"
+							alt=""
+						/>
+						<h2>Sora yori mo Tooi Basho</h2>
+					</div>
+					<div class="episode-count">
+						<span id="watched-episodes">4</span>
+						/
+						<span id="total-episodes">13</span>
+					</div>
+					<div class="status">
+						<span class="dot"></span>
+						<span class="status-text">Watching</span>
+					</div>
+					<div class="completion-progress">
+						<span class="percent">30</span>%
+						<div class="progress-bar-background">
+							<div class="progress-bar-foreground"></div>
+						</div>
+					</div>
+				</div> -->
+			</section>
+		</div>
+	<script type="text/javascript" src="options.bundle.js"></script></body>
+</html>
