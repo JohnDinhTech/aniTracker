@@ -53,7 +53,10 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <SideMenu links={this.links} />
+                <SideMenu
+                    links={this.links}
+                    currentView={this.state.currentView}
+                />
             </div>
         );
     }

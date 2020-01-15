@@ -19,6 +19,8 @@ export const SideMenu = props => (
                     text={text}
                     className={className}
                     key={key}
+                    view={key}
+                    currentView={props.currentView}
                 />
             ))}
         </nav>
