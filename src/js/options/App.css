@@ -1,0 +1,15 @@
+.App {
+	height: 100vh;
+	background-color: #172b4d;
+}
+
+.App:before {
+	content: "";
+	position: absolute;
+	top: -150vh;
+	bottom: 0;
+	left: 0px;
+	width: 250vw;
+	background-color: #11cdef;
+	transform: skew(-78deg);
+}
