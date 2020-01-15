@@ -11,10 +11,30 @@ import heartIcon from "../../../img/icons/heart.svg";
 import settingsIcon from "../../../img/icons/settings.svg";
 
 const links = [
-    { icon: homeIcon, iconAlt: "Home Icon", text: "Home" },
-    { icon: copyIcon, iconAlt: "Copy Icon", text: "Sync With MyAnimeList" },
-    { icon: heartIcon, iconAlt: "Heart Icon", text: "Support" },
-    { icon: settingsIcon, iconAlt: "Settings Icon", text: "Settings" }
+    {
+        icon: homeIcon,
+        iconAlt: "Home Icon",
+        text: "Home",
+        className: "home-icon"
+    },
+    {
+        icon: copyIcon,
+        iconAlt: "Copy Icon",
+        text: "Sync With MyAnimeList",
+        className: "copy-icon"
+    },
+    {
+        icon: heartIcon,
+        iconAlt: "Heart Icon",
+        text: "Support",
+        className: "heart-icon"
+    },
+    {
+        icon: settingsIcon,
+        iconAlt: "Settings Icon",
+        text: "Settings",
+        className: "settings-icon"
+    }
 ];
 
 export const SideMenu = props => (
@@ -24,12 +44,13 @@ export const SideMenu = props => (
             aniTracker
         </h1>
         <nav>
-            {links.map(({ icon, iconAlt, text }) => (
+            {links.map(({ icon, iconAlt, text, className }) => (
                 <MenuLink
                     key={icon}
                     icon={icon}
                     iconAlt={iconAlt}
                     text={text}
+                    className={className}
                 />
             ))}
         </nav>
