@@ -175,8 +175,9 @@ class App extends Component {
 					currentView={this.state.currentView}
 					handleLinkClick={this.handleLinkClick}
 				/>
-				<Modal />
-				{/* {this.state.currentView === "home" && <Button />} */}
+				{this.state.currentView === "home" && (
+					<Modal listItems={this.state.listItems} />
+				)}
 			</div>
 		);
 	}

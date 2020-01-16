@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { SearchBar } from "../search-bar/search-bar.component";
 import { SortTitles } from "../sort-titles/sort-titles";
+import { ListItemsContainer } from "../list-items-container/list-items-container.components";
 import "./modal.styles.css";
 
 class Modal extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			renderList: [],
@@ -37,6 +38,7 @@ class Modal extends Component {
 				<h1 style={this.header.style}>{this.header.text}</h1>
 				<SearchBar mode={this.state.mode} />
 				<SortTitles mode={this.state.mode} titles={this.titles} />
+				<ListItemsContainer listItems={this.props.listItems} />
 			</div>
 		);
 	}
