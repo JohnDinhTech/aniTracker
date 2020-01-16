@@ -11,6 +11,7 @@ export const MenuLink = ({
 	onClick
 }) => (
 	<a
+		className='menu-link'
 		href='#'
 		style={
 			currentView === view

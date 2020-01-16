@@ -1,15 +1,15 @@
-a {
-    display: block;
-    color: #172b4d;
-    text-decoration: none;
-    padding: 20px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    transition: color ease 100ms;
+.menu-link {
+	display: block;
+	color: #172b4d;
+	text-decoration: none;
+	padding: 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	transition: color ease 100ms;
 }
 
-a:hover {
-    background-color: #f6f9fc;
-    color: #11cdef;
+.menu-link:hover {
+	background-color: #f6f9fc;
+	color: #11cdef;
 }

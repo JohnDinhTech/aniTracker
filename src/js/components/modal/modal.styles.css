@@ -6,6 +6,7 @@
 	left: calc(50% + 160px);
 	transform: translate(-50%, -50%);
 	border-radius: 5px;
+
 	/* max-height: 65vh; */
 	/* max-height: 45vh; */
 }

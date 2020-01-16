@@ -1,0 +1,15 @@
+.list-item {
+	display: grid;
+	grid-template-columns: 10% 25% 25% 15% 25%;
+	padding-left: 1px;
+	margin: 10px auto;
+}
+
+.list-item:nth-child(even) {
+	background-color: #f1f3f9;
+}
+
+.list-item .list-title {
+	display: flex;
+	align-items: center;
+}
