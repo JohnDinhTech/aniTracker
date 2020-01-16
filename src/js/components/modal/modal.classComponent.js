@@ -37,7 +37,6 @@ class Modal extends Component {
 		const filteredList = this.props.listItems.filter((item) =>
 			item.title.toLowerCase().includes(term.toLowerCase())
 		);
-		console.log(filteredList);
 		this.setState({ renderList: filteredList });
 	};
 
