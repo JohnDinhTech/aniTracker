@@ -7,8 +7,8 @@ import "./list-items-container.styles.css";
 export const ListItemsContainer = (props) => {
 	return (
 		<div className='list-container'>
-			{props.listItems.map(({ title, image_url }) => (
-				<ListItem title={title} image_url={image_url} />
+			{props.listItems.map(({ title, image_url, mal_id }) => (
+				<ListItem title={title} image_url={image_url} key={mal_id} />
 			))}
 		</div>
 	);

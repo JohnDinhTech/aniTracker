@@ -6,7 +6,6 @@ import { Checkbox } from "../checkbox/checkbox.component";
 import { ListTitle } from "./list-title.component";
 
 export const ListItem = ({ title, image_url }) => {
-	console.log(title);
 	return (
 		<div className='list-item'>
 			<Checkbox />

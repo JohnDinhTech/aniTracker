@@ -9,7 +9,7 @@ class Modal extends Component {
 		super(props);
 
 		this.state = {
-			renderList: [],
+			renderList: this.props.listItems,
 			mode: "list"
 		};
 
@@ -32,13 +32,25 @@ class Modal extends Component {
 		];
 	}
 
+	filterList = (e) => {
+		const term = e.target.value;
+		const filteredList = this.props.listItems.filter((item) =>
+			item.title.toLowerCase().includes(term.toLowerCase())
+		);
+		console.log(filteredList);
+		this.setState({ renderList: filteredList });
+	};
+
 	render() {
 		return (
 			<div className='modal-container'>
 				<h1 style={this.header.style}>{this.header.text}</h1>
-				<SearchBar mode={this.state.mode} />
+				<SearchBar
+					mode={this.state.mode}
+					onChangeHandler={this.filterList}
+				/>
 				<SortTitles mode={this.state.mode} titles={this.titles} />
-				<ListItemsContainer listItems={this.props.listItems} />
+				<ListItemsContainer listItems={this.state.renderList} />
 			</div>
 		);
 	}

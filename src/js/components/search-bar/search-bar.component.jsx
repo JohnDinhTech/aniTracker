@@ -8,7 +8,11 @@ export const SearchBar = (props) => {
 		return (
 			<div className='searchbar-container'>
 				<img src={searchIcon} alt='Magnifying Glass Icon' />
-				<input type='search' placeholder='Search Anime By Title' />
+				<input
+					type='search'
+					placeholder='Search Anime By Title'
+					onChange={props.onChangeHandler}
+				/>
 			</div>
 		);
 	} else {
