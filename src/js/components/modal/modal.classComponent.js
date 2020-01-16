@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { SearchBar } from "../search-bar/search-bar.component";
 import { SortTitles } from "../sort-titles/sort-titles";
 import { ListItemsContainer } from "../list-items-container/list-items-container.components";
+import { Button } from "../button/button.component";
 import "./modal.styles.css";
 
 class Modal extends Component {
@@ -10,7 +11,8 @@ class Modal extends Component {
 
 		this.state = {
 			renderList: this.props.listItems,
-			mode: "list"
+			mode: "list",
+			selctedItems: []
 		};
 
 		this.header =
@@ -40,6 +42,18 @@ class Modal extends Component {
 		this.setState({ renderList: filteredList });
 	};
 
+	addSelected = (e) => {
+		let selectedItems = [...this.state.selctedItems];
+		if (e.target.checked) {
+			selectedItems.push(e.target);
+		} else {
+			selectedItems.splice(selectedItems.indexOf(e.target), 1);
+		}
+		this.setState({ selctedItems: selectedItems });
+	};
+
+	deleteSelected = () => {};
+
 	render() {
 		return (
 			<div className='modal-container'>
@@ -48,8 +62,13 @@ class Modal extends Component {
 					mode={this.state.mode}
 					onChangeHandler={this.filterList}
 				/>
+				<Button text='Edit' color='#7764e4' outline={true} />
+				<Button text='Delete' color='#cc3f29' outline={false} />
 				<SortTitles mode={this.state.mode} titles={this.titles} />
-				<ListItemsContainer listItems={this.state.renderList} />
+				<ListItemsContainer
+					listItems={this.state.renderList}
+					checkboxHandler={this.addSelected}
+				/>
 			</div>
 		);
 	}

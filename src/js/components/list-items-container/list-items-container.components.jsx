@@ -21,7 +21,8 @@ export const ListItemsContainer = (props) => {
 						<ListItem
 							title={title}
 							image_url={image_url}
-							key={mal_id}
+							mal_id={mal_id}
+							checkboxHandler={props.checkboxHandler}
 						/>
 					</div>
 				))}
