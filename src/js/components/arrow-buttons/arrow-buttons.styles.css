@@ -1,0 +1,12 @@
+.arrow-buttons {
+	display: inline-block;
+	margin-left: 10px;
+	transform: scale(2);
+	vertical-align: middle;
+}
+
+.arrow-buttons img {
+	display: block;
+	margin: 5px 0;
+	cursor: pointer;
+}
