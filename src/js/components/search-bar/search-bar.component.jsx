@@ -4,7 +4,7 @@ import "./search-bar.styles.css";
 import searchIcon from "../../../img/icons/search.svg";
 
 export const SearchBar = (props) => {
-	if (props.mode === "list") {
+	if (props.mode === "home") {
 		return (
 			<div className='searchbar-container'>
 				<img src={searchIcon} alt='Magnifying Glass Icon' />

@@ -3,7 +3,7 @@
 	"version": "0.2.0",
 	"description": "Automatically keep track of what episode you are on in an anime!",
 	"author": "John Duy Dinh",
-	"permissions": ["storage"],
+	"permissions": ["storage", "tabs"],
 	"options_page": "options.html",
 	"background": {
 		"page": "background.html"

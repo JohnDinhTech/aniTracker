@@ -11,12 +11,12 @@ class Modal extends Component {
 
 		this.state = {
 			renderList: this.props.listItems,
-			mode: "list",
+			mode: props.mode,
 			selctedItems: []
 		};
 
 		this.header =
-			this.state.mode === "list"
+			this.state.mode === "home"
 				? {
 						text: "Your List",
 						style: { marginLeft: "5%", marginRight: "2%" }
@@ -26,12 +26,19 @@ class Modal extends Component {
 							"Select the anime you're about to watch! (We only show this once for each anime)",
 						style: { width: "100%", textAlign: "center" }
 				  };
-		this.titles = [
-			{ text: "Title", buttons: false },
-			{ text: "Episodes Watched", buttons: true },
-			{ text: "Status", buttons: false },
-			{ text: "Completion", buttons: true }
-		];
+		this.titles =
+			this.state.mode === "home"
+				? [
+						{ text: "Title", buttons: false },
+						{ text: "Episodes Watched", buttons: true },
+						{ text: "Status", buttons: false },
+						{ text: "Completion", buttons: true }
+				  ]
+				: [
+						{ text: "Title" },
+						{ text: "Total Episodes" },
+						{ text: "Link to MAL" }
+				  ];
 	}
 
 	filterList = (e) => {
@@ -55,22 +62,50 @@ class Modal extends Component {
 	deleteSelected = () => {};
 
 	render() {
-		return (
-			<div className='modal-container'>
-				<h1 style={this.header.style}>{this.header.text}</h1>
-				<SearchBar
-					mode={this.state.mode}
-					onChangeHandler={this.filterList}
-				/>
-				<Button text='Edit' color='#7764e4' outline={true} />
-				<Button text='Delete' color='#cc3f29' outline={false} />
-				<SortTitles mode={this.state.mode} titles={this.titles} />
-				<ListItemsContainer
-					listItems={this.state.renderList}
-					checkboxHandler={this.addSelected}
-				/>
-			</div>
-		);
+		console.log(this.state.renderList);
+		switch (this.state.mode) {
+			case "home":
+				return (
+					<div className='modal-container'>
+						<h1 style={this.header.style}>{this.header.text}</h1>
+						<SearchBar
+							mode={this.state.mode}
+							onChangeHandler={this.filterList}
+						/>
+						<Button text='Edit' color='#7764e4' outline={true} />
+						<Button text='Delete' color='#cc3f29' outline={false} />
+						<SortTitles
+							mode={this.state.mode}
+							titles={this.titles}
+						/>
+						<ListItemsContainer
+							listItems={this.state.renderList}
+							checkboxHandler={this.addSelected}
+						/>
+					</div>
+				);
+			case "selection":
+				return (
+					<div className='modal-container'>
+						<h1 style={this.header.style}>{this.header.text}</h1>
+						<SearchBar
+							mode={this.state.mode}
+							onChangeHandler={this.filterList}
+						/>
+						<SortTitles
+							mode={this.state.mode}
+							titles={this.titles}
+						/>
+						<ListItemsContainer
+							mode={this.state.mode}
+							listItems={this.state.renderList}
+							checkboxHandler={this.addSelected}
+						/>
+					</div>
+				);
+			default:
+				return <div></div>;
+		}
 	}
 }
 
