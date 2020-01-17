@@ -12,85 +12,91 @@ import settingsIcon from "../../img/icons/settings.svg";
 import Modal from "../components/modal/modal.classComponent";
 
 class App extends Component {
-	constructor() {
-		super();
+    constructor() {
+        super();
 
-		this.storage = new ChromeStorage();
+        this.storage = new ChromeStorage();
 
-		this.state = {
-			currentView: "home",
-			listItems: [],
-			selected: {}
-		};
+        this.state = {
+            currentView: "home",
+            listItems: [],
+            selected: {}
+        };
 
-		this.links = [
-			{
-				icon: homeIcon,
-				iconAlt: "Home Icon",
-				text: "Home",
-				className: "home-icon",
-				key: "home"
-			},
-			{
-				icon: copyIcon,
-				iconAlt: "Copy Icon",
-				text: "Sync With MyAnimeList",
-				className: "copy-icon",
-				key: "sync"
-			},
-			{
-				icon: heartIcon,
-				iconAlt: "Heart Icon",
-				text: "Support",
-				className: "heart-icon",
-				key: "support"
-			},
-			{
-				icon: settingsIcon,
-				iconAlt: "Settings Icon",
-				text: "Settings",
-				className: "settings-icon",
-				key: "settings"
-			}
-		];
-	}
+        this.links = [
+            {
+                icon: homeIcon,
+                iconAlt: "Home Icon",
+                text: "Home",
+                className: "home-icon",
+                key: "home"
+            },
+            {
+                icon: copyIcon,
+                iconAlt: "Copy Icon",
+                text: "Sync With MyAnimeList",
+                className: "copy-icon",
+                key: "sync"
+            },
+            {
+                icon: heartIcon,
+                iconAlt: "Heart Icon",
+                text: "Support",
+                className: "heart-icon",
+                key: "support"
+            },
+            {
+                icon: settingsIcon,
+                iconAlt: "Settings Icon",
+                text: "Settings",
+                className: "settings-icon",
+                key: "settings"
+            }
+        ];
+    }
 
-	async componentDidMount() {
-		if (await this.storage.get("selection")) {
-			this.setState({
-				currentView: "selection"
-			});
-			this.storage
-				.getLocal("selected")
-				.then((selected) => this.setState({ selected }));
-		} else {
-		}
-	}
+    componentDidMount() {
+        this.storage.get("selection").then(selection => {
+            console.log(selection);
+            if (selection) {
+                this.updateMode("selection");
+                this.storage.getLocal("selected").then(selected => {
+                    this.updateSelected(selected);
+                });
+            }
+        });
+    }
+    handleLinkClick = e => {
+        this.setState({ currentView: e.target.getAttribute("view") });
+    };
 
-	handleLinkClick = (e) => {
-		this.setState({ currentView: e.target.getAttribute("view") });
-	};
+    updateMode(mode) {
+        this.setState({
+            currentView: mode
+        });
+    }
 
-	render() {
-		return (
-			<div className='App'>
-				<SideMenu
-					links={this.links}
-					currentView={this.state.currentView}
-					handleLinkClick={this.handleLinkClick}
-				/>
-				{this.state.currentView === "home" && (
-					<Modal mode='home' listItems={this.state.listItems} />
-				)}
-				{this.state.selected && (
-					<Modal
-						mode='selection'
-						listItems={this.state.selected.searchResults}
-					/>
-				)}
-			</div>
-		);
-	}
+    updateSelected(selected) {
+        this.setState({ selected });
+    }
+
+    render() {
+        console.log(this.state.selected, "hi");
+
+        return (
+            <div className="App">
+                <SideMenu
+                    links={this.links}
+                    currentView={this.state.currentView}
+                    handleLinkClick={this.handleLinkClick}
+                />
+                <Modal
+                    mode={this.state.currentView}
+                    listItems={this.state.selected || this.state.listItems}
+                />
+            </div>
+        );
+    }
 }
 
 export default App;
