@@ -48,9 +48,42 @@ class ChromeStorage {
 		});
 	}
 
-	async addAnime() {
+	closeSelectionPage() {
+		chrome.storage.sync.set({ selection: false }, () => {
+			chrome.storage.local.set({ selected: null }, () => {
+				chrome.tabs.getCurrent((tab) => chrome.tabs.remove(tab.id));
+			});
+		});
+	}
+
+	async addAnime(
+		{ mal_id, episodes, image_url, title },
+		{ episodeCount, urlTitle, watchUrl }
+	) {
 		const list = await this.get("list");
+		const condition = list.find((anime, index) => {
+			if (anime.mal_id === mal_id) {
+				console.log("FOUND");
+				list[index].episodeCount = episodeCount;
+				list[index].urlTitle.push(urlTitle);
+				list.unshift(list.splice(index, 1)[0]);
+			}
+			return anime.mal_id === mal_id;
+		});
+		if (!condition) {
+			list.unshift({
+				episodeCount,
+				mal_id,
+				image_url,
+				title,
+				watchUrl,
+				episodeTotal: episodes,
+				urlTitle: [urlTitle]
+			});
+		}
 		console.log(list);
+		this.saveList(list);
+		this.closeSelectionPage();
 	}
 
 	// TEMPORARY

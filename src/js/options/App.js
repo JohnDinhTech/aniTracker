@@ -20,8 +20,7 @@ class App extends Component {
 		this.state = {
 			currentView: "home",
 			listItems: [],
-			selected: {},
-			savedList: []
+			selected: {}
 		};
 
 		this.links = [
@@ -64,6 +63,10 @@ class App extends Component {
 					console.log(selected);
 					this.setState({ listItems: selected.searchResults });
 				});
+			} else {
+				this.storage
+					.get("list")
+					.then((listItems) => this.setState({ listItems }));
 			}
 		});
 	}
@@ -72,9 +75,17 @@ class App extends Component {
 		this.setState({ currentView });
 	};
 
-	handleSelectButton = (e) => {
-		console.log(e.target);
-		this.storage.addAnime();
+	handleSelectButton = async (e) => {
+		const mal_id = parseInt(e.target.getAttribute("mal_id"));
+		const anime = this.state.listItems.find(
+			(item) => item.mal_id === mal_id
+		);
+		const selected = await this.storage.getLocal("selected");
+		console.log(anime);
+		this.storage.addAnime(anime, {
+			episodeCount: selected.currentEpisode,
+			urlTitle: selected.urlTitle
+		});
 	};
 
 	updateMode(mode) {
@@ -89,6 +100,7 @@ class App extends Component {
 	}
 
 	render() {
+		console.log(this.state.listItems);
 		return (
 			<div className='App'>
 				<SideMenu

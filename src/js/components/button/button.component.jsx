@@ -2,7 +2,7 @@ import React from "react";
 
 import "./button.styles.css";
 
-export const Button = ({ text, outline, color, handler }) => (
+export const Button = ({ text, outline, color, handler, mal_id }) => (
 	<button
 		style={
 			outline
@@ -17,6 +17,7 @@ export const Button = ({ text, outline, color, handler }) => (
 		}
 		className='button'
 		onClick={handler}
+		mal_id={mal_id}
 	>
 		{text}
 	</button>

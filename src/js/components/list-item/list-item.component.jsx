@@ -16,7 +16,6 @@ export const ListItem = ({
 	selectHandler,
 	mode
 }) => {
-	console.log(mode);
 	switch (mode) {
 		case "home":
 			return (
@@ -43,6 +42,7 @@ export const ListItem = ({
 							color='#11cdef'
 							text='Select'
 							handler={selectHandler}
+							mal_id={mal_id}
 						/>
 					</div>
 				</div>

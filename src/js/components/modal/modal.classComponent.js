@@ -10,7 +10,7 @@ class Modal extends Component {
 		super(props);
 
 		this.state = {
-			renderList: [],
+			renderList: props.listItems,
 			mode: props.mode,
 			selctedItems: [],
 			searching: false
@@ -80,10 +80,9 @@ class Modal extends Component {
 	}
 
 	render() {
-		console.log(this.props);
-
 		switch (this.state.mode) {
 			case "home":
+				console.log();
 				return (
 					<div className='modal-container'>
 						<h1 style={this.header.style}>{this.header.text}</h1>
@@ -100,6 +99,7 @@ class Modal extends Component {
 						<ListItemsContainer
 							listItems={this.state.renderList}
 							checkboxHandler={this.addSelected}
+							mode={this.state.mode}
 						/>
 					</div>
 				);
