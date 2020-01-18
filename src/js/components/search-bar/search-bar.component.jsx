@@ -27,6 +27,7 @@ export const SearchBar = (props) => {
 					type='search'
 					placeholder='Search Anime By Title'
 					style={{ textAlign: "center", width: "100%" }}
+					onChange={props.onChangeHandler}
 				/>
 			</div>
 		);

@@ -5,6 +5,7 @@ import "./list-items-container.styles.css";
 
 export const ListItemsContainer = (props) => {
 	if (props.listItems.length > 0) {
+		console.log("rendering");
 		return (
 			<div className='list-container'>
 				<FlipMove
