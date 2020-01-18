@@ -48,6 +48,11 @@ class ChromeStorage {
 		});
 	}
 
+	async addAnime() {
+		const list = await this.get("list");
+		console.log(list);
+	}
+
 	// TEMPORARY
 	resetList() {
 		chrome.storage.sync.set({ list: {} });

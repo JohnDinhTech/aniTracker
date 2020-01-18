@@ -20,7 +20,8 @@ class App extends Component {
 		this.state = {
 			currentView: "home",
 			listItems: [],
-			selected: {}
+			selected: {},
+			savedList: []
 		};
 
 		this.links = [
@@ -60,13 +61,20 @@ class App extends Component {
 			if (selection) {
 				this.updateMode("selection");
 				this.storage.getLocal("selected").then((selected) => {
+					console.log(selected);
 					this.setState({ listItems: selected.searchResults });
 				});
 			}
 		});
 	}
 	handleLinkClick = (e) => {
-		this.setState({ currentView: e.target.getAttribute("view") });
+		const currentView = e.target.getAttribute("view");
+		this.setState({ currentView });
+	};
+
+	handleSelectButton = (e) => {
+		console.log(e.target);
+		this.storage.addAnime();
 	};
 
 	updateMode(mode) {
@@ -91,6 +99,7 @@ class App extends Component {
 				<Modal
 					mode={this.state.currentView}
 					listItems={this.state.listItems}
+					selectHandler={this.handleSelectButton}
 				/>
 			</div>
 		);

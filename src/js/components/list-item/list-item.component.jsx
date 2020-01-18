@@ -4,14 +4,19 @@ import "./list-item.styles.css";
 
 import { Checkbox } from "../checkbox/checkbox.component";
 import { ListTitle } from "./list-title.component";
+import { Button } from "../button/button.component";
 
 export const ListItem = ({
 	title,
 	image_url,
 	mal_id,
 	checkboxHandler,
+	totalEpisodes,
+	url,
+	selectHandler,
 	mode
 }) => {
+	console.log(mode);
 	switch (mode) {
 		case "home":
 			return (
@@ -27,7 +32,22 @@ export const ListItem = ({
 			return (
 				<div className='list-item-selection'>
 					<ListTitle title={title} image_url={image_url} />
+					<div>{totalEpisodes === 0 ? "Unkown" : totalEpisodes}</div>
+					<div>
+						<a className='mal-link' href={url}>
+							MyAnimeList
+						</a>
+					</div>
+					<div>
+						<Button
+							color='#11cdef'
+							text='Select'
+							handler={selectHandler}
+						/>
+					</div>
 				</div>
 			);
+		default:
+			return <div></div>;
 	}
 };

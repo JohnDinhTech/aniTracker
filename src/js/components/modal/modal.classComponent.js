@@ -80,6 +80,8 @@ class Modal extends Component {
 	}
 
 	render() {
+		console.log(this.props);
+
 		switch (this.state.mode) {
 			case "home":
 				return (
@@ -117,6 +119,7 @@ class Modal extends Component {
 							mode={this.state.mode}
 							listItems={this.state.renderList}
 							checkboxHandler={this.addSelected}
+							selectHandler={this.props.selectHandler}
 						/>
 					</div>
 				);
