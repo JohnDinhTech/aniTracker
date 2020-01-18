@@ -63,7 +63,6 @@ class ChromeTabs {
 				return true;
 			}
 		});
-		console.log(condition);
 
 		if (!condition) {
 			this.storage.selectionPage({
