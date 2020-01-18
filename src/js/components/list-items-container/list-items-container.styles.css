@@ -19,3 +19,7 @@
 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	background-color: #11cdef;
 }
+
+.item:nth-child(even) {
+	background-color: #f1f3f9;
+}

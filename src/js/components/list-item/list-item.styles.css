@@ -5,11 +5,26 @@
 	margin: 10px auto;
 }
 
-.list-item:nth-child(even) {
-	background-color: #f1f3f9;
-}
-
 .list-item .list-title {
 	display: flex;
 	align-items: center;
+}
+
+.list-item-selection {
+	display: grid;
+	grid-template-columns: 25% 25% 15% 35%;
+	padding: 10px 0;
+}
+
+.list-item-selection div {
+	display: flex;
+	align-items: center;
+}
+
+.list-item-selection div:not(.list-title) {
+	justify-content: center;
+}
+
+.list-item-selection .list-title {
+	margin-left: 30px;
 }

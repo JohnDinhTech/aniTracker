@@ -12,18 +12,22 @@ export const ListItem = ({
 	checkboxHandler,
 	mode
 }) => {
-	if (mode === "home") {
-		return (
-			<div className='list-item'>
-				<Checkbox mal_id={mal_id} checkboxHandler={checkboxHandler} />
-				<ListTitle title={title} image_url={image_url} />
-			</div>
-		);
-	} else {
-		return (
-			<div className='list-item'>
-				<ListTitle title={title} image_url={image_url} />
-			</div>
-		);
+	switch (mode) {
+		case "home":
+			return (
+				<div className='list-item'>
+					<Checkbox
+						mal_id={mal_id}
+						checkboxHandler={checkboxHandler}
+					/>
+					<ListTitle title={title} image_url={image_url} />
+				</div>
+			);
+		case "selection":
+			return (
+				<div className='list-item-selection'>
+					<ListTitle title={title} image_url={image_url} />
+				</div>
+			);
 	}
 };

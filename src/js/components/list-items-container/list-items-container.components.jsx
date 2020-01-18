@@ -4,8 +4,7 @@ import FlipMove from "react-flip-move";
 import "./list-items-container.styles.css";
 
 export const ListItemsContainer = (props) => {
-	console.log(props.mode);
-	if (props.mode === "home") {
+	if (props.listItems.length > 0) {
 		return (
 			<div className='list-container'>
 				<FlipMove
@@ -15,12 +14,13 @@ export const ListItemsContainer = (props) => {
 					typeName='div'
 				>
 					{props.listItems.map(({ title, image_url, mal_id }) => (
-						<div key={mal_id}>
+						<div key={mal_id} className='item'>
 							<ListItem
 								title={title}
 								image_url={image_url}
 								mal_id={mal_id}
 								checkboxHandler={props.checkboxHandler}
+								mode={props.mode}
 							/>
 						</div>
 					))}
@@ -28,7 +28,6 @@ export const ListItemsContainer = (props) => {
 			</div>
 		);
 	} else {
-		console.log(props.listItems);
-		return <div className='list-container'></div>;
+		return <div></div>;
 	}
 };
