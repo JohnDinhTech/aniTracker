@@ -34,6 +34,7 @@ class ChromeStorage {
 		chrome.storage.sync.set({ selection: true }, () => {
 			chrome.storage.local.set({ selected }, () => {
 				chrome.runtime.openOptionsPage(() => {
+					console.log("opening options page");
 					chrome.tabs.query(
 						{
 							active: true,

@@ -9,7 +9,6 @@ class ChromeTabs {
 		chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 			const isTracking = await this.storage.get("tracking");
 			const isCompatible = tab.url.toLowerCase().includes("episode");
-			console.log(isTracking);
 			if (
 				isCompatible &&
 				isTracking &&
@@ -46,24 +45,23 @@ class ChromeTabs {
 		let searchResults = await jikanjs.search("anime", titleName);
 		searchResults = searchResults.results;
 		const condition = list.find((listItem, index) => {
-			const currentAnime = list.anime[index];
+			const currentAnime = list[index];
 			if (listItem.urlTitle.indexOf(titleName) >= 0) {
 				if (
 					episodeNumber < listItem.episodeTotal ||
 					listItem.episodeTotal === 0
 				) {
-					list[index].watchUrl = updateWatchUrl(
+					list[index].watchUrl = this.updateWatchUrl(
 						url,
 						episodeNumberUrl[0],
 						episodeNumber
 					);
 				}
+				list[index].episodeCount = episodeNumber;
+				list.splice(index, 1);
+				list.unshift(currentAnime);
+				return true;
 			}
-
-			list[index].episodeCount = episodeNumber;
-			list.splice(index, 1);
-			list.unshift(currentAnime);
-			return true;
 		});
 		console.log(condition);
 

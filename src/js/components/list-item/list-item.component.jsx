@@ -14,6 +14,7 @@ export const ListItem = ({
 	totalEpisodes,
 	url,
 	selectHandler,
+	episodeCount,
 	mode
 }) => {
 	switch (mode) {
@@ -25,6 +26,7 @@ export const ListItem = ({
 						checkboxHandler={checkboxHandler}
 					/>
 					<ListTitle title={title} image_url={image_url} />
+					<div>{episodeCount}</div>
 				</div>
 			);
 		case "selection":

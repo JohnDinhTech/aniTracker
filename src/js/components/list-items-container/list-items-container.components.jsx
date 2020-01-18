@@ -14,7 +14,14 @@ export const ListItemsContainer = (props) => {
 					typeName='div'
 				>
 					{props.listItems.map(
-						({ title, image_url, mal_id, episodes, url }) => (
+						({
+							title,
+							image_url,
+							mal_id,
+							episodes,
+							url,
+							episodeCount
+						}) => (
 							<div key={mal_id} className='item'>
 								<ListItem
 									title={title}
@@ -25,6 +32,7 @@ export const ListItemsContainer = (props) => {
 									totalEpisodes={episodes}
 									url={url}
 									selectHandler={props.selectHandler}
+									episodeCount={episodeCount}
 								/>
 							</div>
 						)
