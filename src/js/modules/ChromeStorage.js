@@ -1,5 +1,5 @@
 class ChromeStorage {
-    constructor() {}
+    constructor() { }
 
     onInstall() {
         chrome.storage.sync.set({
@@ -80,8 +80,6 @@ class ChromeStorage {
                 watchUrl,
                 episodeTotal: episodes,
                 urlTitle: [urlTitle],
-                status: () =>
-                    (episodeCount === episodes ? "Completed" : "Watching")()
             });
         }
         console.log(list);

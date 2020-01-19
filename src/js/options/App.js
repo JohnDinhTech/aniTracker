@@ -96,7 +96,6 @@ class App extends Component {
 
 	updateSelected(selected) {
 		this.setState({ selected });
-		this.forceUpdate();
 	}
 
 	render() {

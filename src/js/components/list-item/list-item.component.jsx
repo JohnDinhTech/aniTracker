@@ -28,8 +28,9 @@ export const ListItem = ({
                     />
                     <ListTitle title={title} image_url={image_url} />
                     <div>
-                        {episodeCount}/{episodeTotal === 0 ? "?" : episodeTotal}
+                        <span>{episodeCount}</span>/{episodeTotal === 0 ? "?" : episodeTotal}
                     </div>
+                    <div>{(episodeCount === episodeTotal ? "Completed" : "Watching")}</div>
                 </div>
             );
         case "selection":
