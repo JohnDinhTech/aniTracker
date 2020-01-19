@@ -26,7 +26,6 @@ const calculateStatus = (episodeCount, episodeTotal) => {
 	} else {
 		return {
 			status: "Watching",
-			completion: Math.ceil((episodeCount / episodeTotal) * 100),
 			progressBarWidth: `${Math.ceil(
 				(episodeCount / episodeTotal) * 100
 			)}%`,
@@ -72,7 +71,7 @@ export const ListItem = ({
 					</div>
 					<ProgressBar
 						color={statusData.progressColor}
-						text={statusData.completion}
+						text={statusData.progressBarWidth}
 						width={statusData.progressBarWidth}
 					/>
 				</div>
