@@ -45,6 +45,7 @@ export const ListItem = ({
 	selectHandler,
 	episodeCount,
 	episodeTotal,
+	watchUrl,
 	mode
 }) => {
 	switch (mode) {
@@ -56,7 +57,11 @@ export const ListItem = ({
 						mal_id={mal_id}
 						checkboxHandler={checkboxHandler}
 					/>
-					<ListTitle title={title} image_url={image_url} />
+					<ListTitle
+						title={title}
+						image_url={image_url}
+						watchUrl={watchUrl}
+					/>
 					<div>
 						<span>{episodeCount}</span>/
 						{episodeTotal === 0 ? "?" : episodeTotal}

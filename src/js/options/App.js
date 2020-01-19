@@ -82,9 +82,11 @@ class App extends Component {
 		);
 		const selected = await this.storage.getLocal("selected");
 		console.log(anime);
+		console.log(selected);
 		this.storage.addAnime(anime, {
 			episodeCount: selected.currentEpisode,
-			urlTitle: selected.urlTitle
+			urlTitle: selected.urlTitle,
+			watchUrl: selected.watchUrl
 		});
 	};
 

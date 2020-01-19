@@ -6,7 +6,7 @@
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
-	transition: color ease 100ms;
+	transition: all ease 500ms;
 }
 
 .menu-link:hover {

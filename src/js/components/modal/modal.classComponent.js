@@ -82,7 +82,6 @@ class Modal extends Component {
 	render() {
 		switch (this.state.mode) {
 			case "home":
-				console.log();
 				return (
 					<div className='modal-container'>
 						<h1 style={this.header.style}>{this.header.text}</h1>

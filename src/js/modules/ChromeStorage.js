@@ -72,6 +72,7 @@ class ChromeStorage {
 			return anime.mal_id === mal_id;
 		});
 		if (!condition) {
+			console.log(watchUrl);
 			list.unshift({
 				episodeCount,
 				mal_id,
