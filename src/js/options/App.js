@@ -101,7 +101,7 @@ class App extends Component {
 	}
 
 	render() {
-		console.log(this.state.listItems);
+		console.log(this.currentView);
 		return (
 			<div className='App'>
 				<SideMenu

@@ -19,7 +19,7 @@ export const MenuLink = ({
 				: {}
 		}
 		view={view}
-		onClick={onClick}
+		onClick={currentView === "selection" ? null : onClick}
 	>
 		<img className={className} src={icon} alt={iconAlt} />
 		{text}

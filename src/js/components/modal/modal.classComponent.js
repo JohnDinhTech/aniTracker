@@ -114,7 +114,10 @@ class Modal extends Component {
 			!this.state.searching
 		) {
 			this.setList(this.props.listItems);
-		} else if (this.props.mode !== this.state.mode) {
+		} else if (
+			this.props.mode === "selection" &&
+			this.props.mode !== this.state.mode
+		) {
 			this.titles = [
 				{ text: "Title" },
 				{ text: "Total Episodes" },
@@ -124,9 +127,13 @@ class Modal extends Component {
 			this.header = {
 				text:
 					"Select the anime you're about to watch! (We only show this once for each anime)",
-				style: { width: "100%", textAlign: "center" }
+				style: {
+					width: "100%",
+					textAlign: "center"
+				}
 			};
-
+			this.setState({ mode: this.props.mode });
+		} else if (this.props.mode !== this.state.mode) {
 			this.setState({ mode: this.props.mode });
 		}
 	}
@@ -148,6 +155,7 @@ class Modal extends Component {
 	}
 
 	render() {
+		console.log(this.state.mode);
 		switch (this.state.mode) {
 			case "home":
 				return (
