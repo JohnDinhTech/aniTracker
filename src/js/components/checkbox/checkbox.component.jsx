@@ -7,6 +7,7 @@ export const Checkbox = (props) => (
 			type='checkbox'
 			mal_id={props.mal_id}
 			onChange={props.checkboxHandler}
+			checked={props.shouldCheck}
 		/>
 		<span className='checkmark'></span>
 	</label>

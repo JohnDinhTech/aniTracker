@@ -34,6 +34,9 @@ const calculateStatus = (episodeCount, episodeTotal) => {
 	}
 };
 
+const checkBox = (selectedItems, mal_id) =>
+	selectedItems.indexOf(mal_id) >= 0 ? true : false;
+
 export const ListItem = ({
 	title,
 	image_url,
@@ -45,6 +48,7 @@ export const ListItem = ({
 	episodeCount,
 	episodeTotal,
 	watchUrl,
+	selectedItems,
 	mode
 }) => {
 	switch (mode) {
@@ -55,6 +59,7 @@ export const ListItem = ({
 					<Checkbox
 						mal_id={mal_id}
 						checkboxHandler={checkboxHandler}
+						shouldCheck={checkBox(selectedItems, mal_id)}
 					/>
 					<ListTitle
 						title={title}

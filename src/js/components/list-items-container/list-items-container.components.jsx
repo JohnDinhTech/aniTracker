@@ -5,6 +5,7 @@ import "./list-items-container.styles.css";
 
 export const ListItemsContainer = (props) => {
 	if (props.listItems.length > 0) {
+		console.log(props);
 		return (
 			<div className='list-container'>
 				<FlipMove
@@ -37,6 +38,7 @@ export const ListItemsContainer = (props) => {
 									episodeCount={episodeCount}
 									episodeTotal={episodeTotal}
 									watchUrl={watchUrl}
+									selectedItems={props.selectedItems}
 								/>
 							</div>
 						)

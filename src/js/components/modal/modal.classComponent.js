@@ -12,7 +12,7 @@ class Modal extends Component {
 		this.state = {
 			renderList: props.listItems,
 			mode: props.mode,
-			selctedItems: [],
+			selectedItems: [],
 			searching: false
 		};
 
@@ -41,14 +41,15 @@ class Modal extends Component {
 	};
 
 	addSelected = (e) => {
-		let selectedItems = [...this.state.selctedItems];
+		let selectedItems = [...this.state.selectedItems];
+		const mal_id = parseInt(e.target.getAttribute("mal_id"));
 		if (e.target.checked) {
-			selectedItems.push(e.target);
+			selectedItems.push(mal_id);
 		} else {
-			selectedItems.splice(selectedItems.indexOf(e.target), 1);
+			selectedItems.splice(selectedItems.indexOf(mal_id), 1);
 		}
-		this.setState({ selctedItems: selectedItems });
-		console.log(this.state.selctedItems);
+		this.setState({ selectedItems: selectedItems });
+		console.log(this.state.selectedItems);
 	};
 
 	deleteSelected = () => {};
@@ -83,6 +84,7 @@ class Modal extends Component {
 	render() {
 		switch (this.state.mode) {
 			case "home":
+				console.log(this.state.selectedItems);
 				return (
 					<div className='modal-container'>
 						<h1 style={this.header.style}>{this.header.text}</h1>
@@ -100,6 +102,7 @@ class Modal extends Component {
 							listItems={this.state.renderList}
 							checkboxHandler={this.addSelected}
 							mode={this.state.mode}
+							selectedItems={this.state.selectedItems}
 						/>
 					</div>
 				);
