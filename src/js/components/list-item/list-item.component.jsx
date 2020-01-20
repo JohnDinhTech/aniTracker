@@ -8,7 +8,13 @@ import { Button } from "../button/button.component";
 import { StatusDot } from "../status-dot/status-dot.components";
 import { ProgressBar } from "../progress-bar/progress-bar.component";
 
+const round = (value, precision) => {
+	const multiplier = Math.pow(10, precision || 0);
+	return Math.round(value * multiplier) / multiplier;
+};
+
 const calculateStatus = (episodeCount, episodeTotal) => {
+	console.log(typeof episodeCount, typeof episodeTotal);
 	if (episodeTotal === 0) {
 		return {
 			status: "Watching",
@@ -16,7 +22,7 @@ const calculateStatus = (episodeCount, episodeTotal) => {
 			progressBarWidth: "0%",
 			progressColor: "#11cdef"
 		};
-	} else if (episodeCount === episodeTotal) {
+	} else if (parseInt(episodeCount) === episodeTotal) {
 		return {
 			status: "Completed",
 			completion: "100%",
@@ -26,8 +32,9 @@ const calculateStatus = (episodeCount, episodeTotal) => {
 	} else {
 		return {
 			status: "Watching",
-			progressBarWidth: `${Math.ceil(
-				(episodeCount / episodeTotal) * 100
+			progressBarWidth: `${round(
+				(episodeCount / episodeTotal) * 100,
+				1
 			)}%`,
 			progressColor: "#11cdef"
 		};
@@ -49,6 +56,8 @@ export const ListItem = ({
 	episodeTotal,
 	watchUrl,
 	selectedItems,
+	editState,
+	editNumberHandler,
 	mode
 }) => {
 	switch (mode) {
@@ -68,7 +77,18 @@ export const ListItem = ({
 						style={{ marginLeft: "4em" }}
 					/>
 					<div>
-						<span>{episodeCount}</span>/
+						{editState === true && (
+							<input
+								className='edit-box'
+								mal_id={mal_id}
+								type='number'
+								min='1'
+								value={episodeCount}
+								max={episodeTotal === 0 ? null : episodeTotal}
+								onChange={editNumberHandler}
+							/>
+						)}
+						{editState === false && <span>{episodeCount}</span>}/
 						{episodeTotal === 0 ? "?" : episodeTotal}
 					</div>
 					<div>

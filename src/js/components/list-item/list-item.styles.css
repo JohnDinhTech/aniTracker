@@ -47,3 +47,17 @@
 	color: #11cdef;
 	border-bottom: 2px solid #172b4d;
 }
+
+.edit-box {
+	outline: none;
+	border: 2px solid #172b4d17;
+	box-shadow: 0 3px 17px #2c28282a;
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 800;
+	color: #172b4d;
+	transition: box-shadow ease-in-out 150ms;
+	width: 50px;
+	margin-right: 5px;
+	text-align: center;
+}

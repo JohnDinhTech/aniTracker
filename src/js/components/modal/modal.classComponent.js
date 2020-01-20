@@ -18,7 +18,8 @@ class Modal extends Component {
 			renderList: props.listItems,
 			mode: props.mode,
 			selectedItems: [],
-			searching: false
+			searching: false,
+			editState: false
 		};
 
 		this.header = {
@@ -74,6 +75,39 @@ class Modal extends Component {
 		});
 	};
 
+	editNumberHandler = (e) => {
+		if (
+			e.target.value === "" ||
+			e.target.value < parseInt(e.target.getAttribute("min"))
+		) {
+			e.target.value = 1;
+		} else if (
+			e.target.value > parseInt(e.target.getAttribute("max")) &&
+			parseInt(e.target.getAttribute("max")) !== 0
+		) {
+			e.target.value = parseInt(e.target.getAttribute("max"));
+		} else if (e.target.value > 2500) {
+			e.target.value = 2500;
+		}
+		const renderList = this.state.renderList;
+		const mal_id = parseInt(e.target.getAttribute("mal_id"));
+		const matchingAnime = renderList.find(
+			(anime) => anime.mal_id === mal_id
+		);
+		matchingAnime.episodeCount = e.target.value;
+		this.setState({ renderList });
+		console.log(this.state.renderList);
+	};
+
+	editButtonHandler = () => {
+		if (this.state.editState) {
+			this.storage.saveList(this.state.renderList);
+		}
+		this.setState((prevState) => ({
+			editState: !prevState.editState
+		}));
+	};
+
 	componentDidUpdate() {
 		if (
 			this.props.listItems !== this.state.renderList &&
@@ -111,7 +145,12 @@ class Modal extends Component {
 							mode={this.state.mode}
 							onChangeHandler={this.filterList}
 						/>
-						<Button text='Edit' color='#7764e4' outline={true} />
+						<Button
+							text={this.state.editState ? "Done" : "Edit"}
+							color='#7764e4'
+							outline={!this.state.editState}
+							handler={this.editButtonHandler}
+						/>
 						<Button
 							text='Delete'
 							color='#cc3f29'
@@ -144,6 +183,8 @@ class Modal extends Component {
 							checkboxHandler={this.addSelected}
 							mode={this.state.mode}
 							selectedItems={this.state.selectedItems}
+							editState={this.state.editState}
+							editNumberHandler={this.editNumberHandler}
 						/>
 					</div>
 				);

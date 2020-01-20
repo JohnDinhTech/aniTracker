@@ -7,5 +7,5 @@
 	cursor: pointer;
 	outline: none;
 	margin: 20px;
-	transition: opacity 200ms ease;
+	transition: all 200ms ease;
 }
