@@ -65,7 +65,7 @@ export const ListItem = ({
 						title={title}
 						image_url={image_url}
 						watchUrl={watchUrl}
-						center={{ justifyContent: "center" }}
+						style={{ marginLeft: "4em" }}
 					/>
 					<div>
 						<span>{episodeCount}</span>/
