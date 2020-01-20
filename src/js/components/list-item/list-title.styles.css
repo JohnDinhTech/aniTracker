@@ -4,6 +4,10 @@
 	transition: color linear 300ms;
 }
 
+.list-title a {
+	color: #172b4d;
+}
+
 .list-title a:hover {
 	color: #11cdef;
 }
