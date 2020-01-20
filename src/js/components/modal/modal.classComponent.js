@@ -48,6 +48,7 @@ class Modal extends Component {
 			selectedItems.splice(selectedItems.indexOf(e.target), 1);
 		}
 		this.setState({ selctedItems: selectedItems });
+		console.log(this.state.selctedItems);
 	};
 
 	deleteSelected = () => {};

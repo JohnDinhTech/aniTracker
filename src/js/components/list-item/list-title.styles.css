@@ -1,6 +1,11 @@
 .list-title a h2 {
 	display: inline-block;
 	font-size: 1.2em;
+	transition: color linear 300ms;
+}
+
+.list-title a:hover {
+	color: #11cdef;
 }
 
 .list-title img {
