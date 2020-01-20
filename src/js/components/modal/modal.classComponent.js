@@ -131,6 +131,18 @@ class Modal extends Component {
 		}
 	}
 
+	selectAllHandler = (e) => {
+		const selectedItems = this.state.selectedItems;
+		if (e.target.checked) {
+			this.state.renderList.forEach((anime) => {
+				selectedItems.push(anime.mal_id);
+			});
+			this.setState({ selectedItems });
+		} else {
+			this.setState({ selectedItems: [] });
+		}
+	};
+
 	setList(renderList) {
 		this.setState({ renderList });
 	}
@@ -177,6 +189,7 @@ class Modal extends Component {
 						<SortTitles
 							mode={this.state.mode}
 							titles={this.titles}
+							selectAllHandler={this.selectAllHandler}
 						/>
 						<ListItemsContainer
 							listItems={this.state.renderList}

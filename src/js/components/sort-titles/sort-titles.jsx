@@ -8,7 +8,7 @@ export const SortTitles = (props) => {
 	if (props.mode === "home") {
 		return (
 			<div className='sort-titles'>
-				<Checkbox />
+				<Checkbox checkboxHandler={props.selectAllHandler} />
 				{props.titles.map((title) => {
 					if (title.buttons) {
 						return (
