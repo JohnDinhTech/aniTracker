@@ -13,7 +13,7 @@ const calculateStatus = (episodeCount, episodeTotal) => {
 		return {
 			status: "Watching",
 			completion: "?%",
-			progressBarWidth: 0,
+			progressBarWidth: "0%",
 			progressColor: "#11cdef"
 		};
 	} else if (episodeCount === episodeTotal) {

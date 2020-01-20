@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+
+import ChromeStorage from "../../modules/ChromeStorage";
+
 import { SearchBar } from "../search-bar/search-bar.component";
 import { SortTitles } from "../sort-titles/sort-titles";
 import { ListItemsContainer } from "../list-items-container/list-items-container.components";
@@ -8,6 +11,8 @@ import "./modal.styles.css";
 class Modal extends Component {
 	constructor(props) {
 		super(props);
+
+		this.storage = new ChromeStorage();
 
 		this.state = {
 			renderList: props.listItems,
@@ -49,10 +54,25 @@ class Modal extends Component {
 			selectedItems.splice(selectedItems.indexOf(mal_id), 1);
 		}
 		this.setState({ selectedItems: selectedItems });
-		console.log(this.state.selectedItems);
 	};
 
-	deleteSelected = () => {};
+	deleteSelected = () => {
+		const renderList = this.state.renderList.filter(
+			(anime) => !this.state.selectedItems.includes(anime.mal_id)
+		);
+		this.storage.saveList(renderList);
+		this.setState({ renderList }, () => {
+			chrome.tabs.query(
+				{
+					active: true,
+					currentWindow: true
+				},
+				(tabs) => {
+					chrome.tabs.reload(tabs[0].id);
+				}
+			);
+		});
+	};
 
 	componentDidUpdate() {
 		if (
@@ -84,7 +104,6 @@ class Modal extends Component {
 	render() {
 		switch (this.state.mode) {
 			case "home":
-				console.log(this.state.selectedItems);
 				return (
 					<div className='modal-container'>
 						<h1 style={this.header.style}>{this.header.text}</h1>
@@ -97,6 +116,7 @@ class Modal extends Component {
 							text='Delete'
 							color='#cc3f29'
 							outline={false}
+							handler={this.deleteSelected}
 							showButton={
 								this.state.selectedItems.length > 0
 									? {
