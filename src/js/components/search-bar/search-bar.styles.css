@@ -1,6 +1,8 @@
 .searchbar-container {
 	display: inline-block;
 	position: relative;
+	margin-right: 3em;
+	transform: translateY(4%);
 }
 
 .searchbar-container input[type="search"] {
