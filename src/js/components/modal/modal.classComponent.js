@@ -93,7 +93,28 @@ class Modal extends Component {
 							onChangeHandler={this.filterList}
 						/>
 						<Button text='Edit' color='#7764e4' outline={true} />
-						<Button text='Delete' color='#cc3f29' outline={false} />
+						<Button
+							text='Delete'
+							color='#cc3f29'
+							outline={false}
+							showButton={
+								this.state.selectedItems.length > 0
+									? {
+											style: {
+												opacity: 1,
+												cursor: "pointer"
+											},
+											disabled: false
+									  }
+									: {
+											style: {
+												opacity: 0,
+												cursor: "context-menu"
+											},
+											disabled: true
+									  }
+							}
+						/>
 						<SortTitles
 							mode={this.state.mode}
 							titles={this.titles}
