@@ -29,9 +29,17 @@ class Modal extends Component {
 
 		this.titles = [
 			{ text: "Title", buttons: false },
-			{ text: "Episodes Watched", buttons: true },
+			{
+				text: "Episodes Watched",
+				buttons: true,
+				handler: this.sortByMostEpisodesWatched
+			},
 			{ text: "Status", buttons: false },
-			{ text: "Completion", buttons: true }
+			{
+				text: "Completion",
+				buttons: true,
+				handler: this.sortByCompletionPercent
+			}
 		];
 	}
 
@@ -47,6 +55,48 @@ class Modal extends Component {
 			return 0;
 		});
 		if (sortByLeast) {
+			this.setState({ renderList: renderList.reverse() });
+		} else {
+			this.setState({ renderList });
+		}
+	};
+
+	sortByCompletionPercent = (sortByLeast) => {
+		const renderList = this.state.renderList;
+		renderList.sort((a, b) => {
+			const completionA = Math.ceil(
+				(a.episodeCount / a.episodeTotal) * 100
+			);
+			const completionB = Math.ceil(
+				(b.episodeCount / b.episodeTotal) * 100
+			);
+			const unknownPercentA =
+				a.episodeTotal === 0 || a.episodeCount > a.episodeTotal;
+
+			const unknownPercentB =
+				b.episodeTotal === 0 || b.episodeCount > b.episodeTotal;
+
+			if (unknownPercentA === false && unknownPercentB === true) {
+				return -1;
+			}
+
+			if (unknownPercentA === true && unknownPercentB === false) {
+				return 1;
+			}
+
+			if (completionA > completionB) {
+				return -1;
+			}
+
+			if (completionA < completionB) {
+				return 1;
+			}
+
+			return 0;
+		});
+		if (sortByLeast) {
+			this.setState({ renderList: renderList.reverse() });
+		} else {
 			this.setState({ renderList });
 		}
 	};
