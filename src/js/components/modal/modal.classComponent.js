@@ -35,6 +35,22 @@ class Modal extends Component {
 		];
 	}
 
+	sortByMostEpisodesWatched = (sortByLeast) => {
+		const renderList = this.state.renderList;
+		renderList.sort((a, b) => {
+			if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+				return -1;
+			}
+			if (parseInt(a.episodeCount) > parseInt(b.episodeCount)) {
+				return 1;
+			}
+			return 0;
+		});
+		if (sortByLeast) {
+			this.setState({ renderList });
+		}
+	};
+
 	filterList = (e) => {
 		const term = e.target.value;
 		const filteredList = this.props.listItems.filter((item) =>
@@ -57,8 +73,10 @@ class Modal extends Component {
 		this.setState({ selectedItems: selectedItems });
 	};
 
-	deleteSelected = () => {
-		const renderList = this.state.renderList.filter(
+	deleteSelected = async () => {
+		let renderList = await this.storage.get("list");
+
+		renderList = renderList.filter(
 			(anime) => !this.state.selectedItems.includes(anime.mal_id)
 		);
 		this.storage.saveList(renderList);
