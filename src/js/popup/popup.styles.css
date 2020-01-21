@@ -1,0 +1,21 @@
+.popup {
+	width: 20em;
+	text-align: center;
+}
+
+h1 {
+	color: #11cdef;
+	font-size: 22px;
+	margin: 1em auto;
+}
+
+.popup .track-status h2 {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 1em;
+	color: #172b4d;
+	font-weight: 700;
+	text-transform: uppercase;
+	transform: translateY(11px);
+	margin-top: 0;
+}

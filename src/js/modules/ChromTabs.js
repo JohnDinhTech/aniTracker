@@ -8,6 +8,7 @@ class ChromeTabs {
 	listenToUrl() {
 		chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 			const isTracking = await this.storage.get("tracking");
+			console.log(isTracking);
 			const isCompatible = tab.url.toLowerCase().includes("episode");
 			if (
 				isCompatible &&

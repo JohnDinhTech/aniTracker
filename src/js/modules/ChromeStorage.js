@@ -22,6 +22,10 @@ class ChromeStorage {
 		});
 	}
 
+	saveTracking(tracking) {
+		chrome.storage.sync.set({ tracking });
+	}
+
 	getLocal(key) {
 		return new Promise((resolve, reject) => {
 			chrome.storage.local.get([key], (results) => {
