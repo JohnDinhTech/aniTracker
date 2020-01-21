@@ -1,0 +1,20 @@
+.list-title a h2 {
+	display: inline-block;
+	font-size: 1.2em;
+	transition: color linear 300ms;
+}
+
+.list-title a {
+	color: #172b4d;
+}
+
+.list-title a:hover {
+	color: #11cdef;
+}
+
+.list-title img {
+	display: inline-block;
+	width: 40px;
+	height: 55px;
+	margin-right: 20px;
+}

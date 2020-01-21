@@ -1,0 +1,466 @@
+@font-face {
+	font-family: "Gotham";
+	src: url("../fonts/Gotham-Book.otf");
+}
+
+body {
+	font-family: "Gotham";
+	margin: 0;
+	overflow: hidden;
+}
+
+.background {
+	height: 100vh;
+	background-color: #172b4d;
+}
+
+.background:before {
+	content: "";
+	position: absolute;
+	top: -150vh;
+	bottom: 0;
+	left: 0px;
+	width: 250vw;
+	background-color: #11cdef;
+	transform: skew(-78deg);
+}
+
+/***************************
+		Side Menu
+***************************/
+.logo-title {
+	font-size: 30px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.logo {
+	margin-right: 20px;
+}
+
+.menu-icon {
+	margin-right: 15px;
+}
+
+.heart-icon {
+	color: red;
+}
+
+#side-menu {
+	background-color: white;
+	max-width: 280px;
+	font-size: 16px;
+	padding: 1px 20px;
+	height: 100%;
+	position: relative;
+}
+
+#side-menu nav a {
+	display: block;
+	color: #172b4d;
+	text-decoration: none;
+	padding: 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	transition: color ease-in 150ms;
+}
+
+#side-menu nav a:hover {
+	background-color: #f6f9fc;
+	color: #11cdef;
+}
+
+#side-menu nav a.active {
+	background-color: #f6f9fc;
+	color: #11cdef;
+}
+
+/***************************
+	   Modal Container
+***************************/
+#modal-container {
+	width: 60vw;
+	background-color: #ffffff;
+	position: absolute;
+	top: 50%;
+	left: calc(50% + 160px);
+	transform: translate(-50%, -50%);
+	border-radius: 5px;
+	max-height: 65vh;
+}
+
+#modal-container div h1 {
+	padding: 20px 0;
+	margin-left: 5%;
+	margin-right: 2%;
+	display: inline-block;
+}
+
+#modal-container .searchbar-container {
+	display: inline-block;
+	position: relative;
+}
+
+#modal-container .list-searchbar {
+	outline: none;
+	border: 1px solid #172b4d17;
+	box-shadow: 0 3px 17px #2c28282a;
+	border-radius: 5px;
+	font-size: 17px;
+	font-weight: 800;
+	color: #172b4d;
+	transition: box-shadow ease-in-out 150ms;
+	height: 40px;
+	padding: 0 20px;
+	padding-left: 50px;
+}
+
+#modal-container .searchbar-container .search-icon {
+	position: absolute;
+	left: 20px;
+	top: 11px;
+	pointer-events: none;
+	transition: opacity ease-out 150ms;
+}
+
+#modal-container .list-searchbar:focus {
+	box-shadow: 0 3px 18px #047c919d;
+}
+
+#modal-container .sort-titles h3 {
+	display: inline-block;
+	font-weight: 100;
+}
+
+#modal-container #list #header {
+	position: relative;
+}
+
+/***************************
+	Scrollbar for Modal
+***************************/
+
+.scrollbar {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar {
+	width: 12px;
+	background-color: #c0bdbd;
+	border-radius: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #11cdef;
+}
+
+/***************************
+		 List Modal
+***************************/
+
+#modal-container .sort-titles {
+	display: grid;
+	grid-template-columns: 10% 25% 25% 15% 25%;
+	background-color: #f1f3f9;
+	text-align: center;
+	padding: 10px;
+	color: #8898aa;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+#modal-container .sort-titles .list-title {
+	text-align: left;
+	margin-left: 20px;
+	align-self: center;
+}
+
+#modal-container .sort-titles .list-status {
+	align-self: center;
+}
+
+#select-all {
+	margin-left: 2px;
+}
+
+.checkbox {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	display: flex;
+	align-self: center;
+}
+
+input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.checkmark {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+	height: 25px;
+	width: 25px;
+	background-color: #fff;
+	border-radius: 5px;
+	transition: background-color 200ms ease-in-out;
+	border: 2px solid #8898aa;
+}
+
+.checkbox:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+.checkbox input:checked ~ .checkmark {
+	background-color: #2196f3;
+	border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.checkbox input:checked ~ .checkmark:after {
+	display: block;
+}
+
+.checkbox .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.sort-arrows {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+.sort-arrows img {
+	display: block;
+	transform: scale(2);
+}
+
+.up-arrow {
+	margin-bottom: 15px;
+}
+
+.down-arrow {
+	margin-top: 15px;
+}
+
+/***************************
+	   Action Buttons
+***************************/
+
+.button-container {
+	display: inline-block;
+	transform: translateY(-2px);
+}
+
+.button {
+	font-size: 16px;
+	color: white;
+	border: none;
+	padding: 10px 40px;
+	border-radius: 5px;
+	cursor: pointer;
+	outline: none;
+	margin: 10px;
+	transition: opacity 200ms ease;
+}
+
+#edit-button {
+	background-color: transparent;
+	color: #7764e4;
+	border: 2px solid #7764e4;
+	transition: all linear 200ms;
+}
+
+#delete-button {
+	background-color: #cc3f29;
+	border: 2px solid #cc3f29;
+	opacity: 0;
+	cursor: default;
+}
+
+/***************************
+	  Anime List Display
+***************************/
+
+#anime-container {
+	max-height: 45vh;
+}
+
+.anime-display {
+	display: grid;
+	grid-template-columns: 10% 25% 25% 15% 25%;
+	padding: 10px;
+	color: #172b4d;
+	margin: 0 0 2px 2px;
+	height: 60px;
+}
+
+.anime-display:nth-child(even) {
+	background-color: #f1f3f9;
+}
+
+.anime-display > div {
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
+	font-size: 14px;
+}
+
+.anime-display .title {
+	font-size: 11px;
+	margin: 0;
+}
+
+.anime-display .title img {
+	width: 40px;
+	margin-right: 20px;
+	margin-left: 20px;
+}
+
+.anime-display .title a {
+	text-decoration: none;
+	padding-bottom: 5px;
+	color: #7764e4;
+	font-size: 15px;
+	font-weight: 800;
+	transition: color ease-in-out 200ms;
+	border-bottom: 2px solid #172b4d;
+}
+
+.anime-display .title a:hover {
+	color: #11cdef;
+}
+
+.anime-display .episode-count {
+	font-weight: 800;
+}
+
+.status .dot {
+	height: 10px;
+	width: 10px;
+	background-color: #11cdef;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.completion-progress .progress-bar-background {
+	background-color: #8898aa;
+	width: 120px;
+	height: 3px;
+	margin-left: 10px;
+}
+
+.completion-progress .progress-bar-foreground {
+	background-color: #11cdef;
+	height: 3px;
+}
+
+/***************************
+	Anime Selection Modal
+***************************/
+#modal-container #select-new-anime .sort-titles {
+	display: grid;
+	grid-template-columns: 25% 25% 15% 35%;
+	background-color: #f1f3f9;
+	text-align: center;
+	padding: 10px;
+	color: #8898aa;
+	text-transform: uppercase;
+	font-size: 11px;
+	max-height: 65vh;
+}
+
+#select-new-anime {
+	display: none;
+}
+
+#anime-selection-container {
+	max-height: 46vh;
+}
+
+/***************************
+   Anime Selection Display
+***************************/
+
+#select-new-anime .sort-titles .list-title {
+	text-align: center;
+	margin-left: 0;
+}
+
+.anime-display.select {
+	display: grid;
+	grid-template-columns: 25% 25% 15% 35%;
+	height: auto;
+	padding: 10px;
+	color: #172b4d;
+}
+
+.anime-display.select .link-to-mal a {
+	color: #7764e4;
+	font-size: 16px;
+	text-decoration: none;
+	transition: color ease 200ms;
+}
+
+.anime-display.select .link-to-mal a:hover {
+	color: #11cdef;
+}
+
+.anime-display.select .select-button button {
+	background-color: #11cdef;
+	font-size: 16px;
+	color: white;
+	border: none;
+	padding: 10px 50px;
+	border-radius: 5px;
+	cursor: pointer;
+	outline: none;
+}
+
+.edit-box {
+	outline: none;
+	border: 2px solid #172b4d17;
+	box-shadow: 0 3px 17px #2c28282a;
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 800;
+	color: #172b4d;
+	transition: box-shadow ease-in-out 150ms;
+	width: 50px;
+	margin-right: 5px;
+	text-align: center;
+}

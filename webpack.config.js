@@ -48,6 +48,14 @@ var options = {
 				exclude: /node_modules/
 			},
 			{
+				test: /\. otf$/,
+				use: [
+					{
+						loader: "file-loader"
+					}
+				]
+			},
+			{
 				test: new RegExp(".(" + fileExtensions.join("|") + ")$"),
 				loader: "file-loader?name=[name].[ext]",
 				exclude: /node_modules/
@@ -56,14 +64,24 @@ var options = {
 				test: /\.html$/,
 				loader: "html-loader",
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(js|jsx)$/,
+				loader: "babel-loader",
+				exclude: /node_modules/
 			}
 		]
 	},
 	resolve: {
-		alias: alias
+		alias: alias,
+		extensions: fileExtensions
+			.map((extension) => "." + extension)
+			.concat([".jsx", ".js", ".css"])
 	},
 	plugins: [
+		// Fix issue #71
 		new CopyWebpackPlugin(["src/manifest.json"], { copyUnmodified: true }),
+
 		// clean the build folder
 		new CleanWebpackPlugin(),
 		// expose and write the allowed env vars on the compiled bundle

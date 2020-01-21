@@ -1,0 +1,27 @@
+.side-menu {
+	background-color: #fff;
+	max-width: 280px;
+	font-size: 16px;
+	padding: 1px 20px;
+	height: 100%;
+	position: relative;
+}
+
+.side-menu h1 {
+	font-size: 30px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.side-menu img {
+	margin-right: 15px;
+}
+
+.heart-icon {
+	margin-left: -2px;
+}
+
+.settings-icon {
+	margin-left: 1px;
+}

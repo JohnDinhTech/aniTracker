@@ -1,0 +1,15 @@
+.menu-link {
+	display: block;
+	color: #172b4d;
+	text-decoration: none;
+	padding: 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	transition: all ease 500ms;
+}
+
+.menu-link:hover {
+	background-color: #f6f9fc;
+	color: #11cdef;
+}

@@ -1,15 +1,9 @@
 {
-	"name": "Weeb Track",
-	"version": "0.0.1",
-	"description": "Keeps track of what episode you are on",
+	"name": "aniTrack",
+	"version": "0.2.0",
+	"description": "Automatically keep track of what episode you are on in an anime!",
 	"author": "John Duy Dinh",
-	"permissions": [
-		"declarativeContent",
-		"tabs",
-		"storage",
-		"activeTab",
-		"unlimitedStorage"
-	],
+	"permissions": ["storage", "tabs"],
 	"options_page": "options.html",
 	"background": {
 		"page": "background.html"
@@ -19,7 +13,7 @@
 		"default_icon": "aniTracker32.png"
 	},
 	"icons": {
-		"48": "aniTracker32.png"
+		"128": "aniTracker32.png"
 	},
 	"manifest_version": 2,
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

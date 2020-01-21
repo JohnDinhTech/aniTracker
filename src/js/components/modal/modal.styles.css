@@ -1,0 +1,18 @@
+.modal-container {
+	width: 60vw;
+	background-color: #ffffff;
+	position: absolute;
+	top: 50%;
+	left: calc(50% + 160px);
+	transform: translate(-50%, -50%);
+	border-radius: 5px;
+
+	/* max-height: 65vh; */
+	/* max-height: 45vh; */
+}
+
+h1 {
+	padding: 20px 0;
+	display: inline-block;
+	font-size: 1.5em;
+}

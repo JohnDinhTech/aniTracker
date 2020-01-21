@@ -1,0 +1,14 @@
+.sort-titles {
+	display: grid;
+	grid-template-columns: 10% 25% 25% 15% 25%;
+	background-color: #f1f3f9;
+	text-align: center;
+	color: #8898aa;
+	text-transform: uppercase;
+	font-size: 11px;
+	padding: 10px 0;
+}
+
+.sort-titles .checkbox {
+	margin-left: -2px;
+}
