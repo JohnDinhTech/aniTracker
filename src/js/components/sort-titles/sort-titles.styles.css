@@ -8,3 +8,7 @@
 	font-size: 11px;
 	padding: 10px 0;
 }
+
+.sort-titles .checkbox {
+	margin-left: -2px;
+}
